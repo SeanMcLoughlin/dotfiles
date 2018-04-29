@@ -1,0 +1,1 @@
+Put all the .<anything> folders in the main folder into the home directory. Everything in .config goes in ~/.config. The two i3 shell scripts go in /usr/local/bin
