@@ -1,0 +1,3 @@
+[submodule "bestbash"]
+	path = bestbash
+	url = https://github.com/jaivardhankapoor/bestbash

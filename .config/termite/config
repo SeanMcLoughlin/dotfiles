@@ -1,51 +1,34 @@
-[colors]
-# Base16 Macintosh
-# Author: Rebecca Bettencourt (http://www.kreativekorp.com)
+[options]
+font = Monospace 14
 
-foreground      = #c0c0c0
-foreground_bold = #c0c0c0
-cursor          = #c0c0c0
-background      = #000000
+[colors]
+foreground = #e6e1dc
+foreground_bold = #e6e1dc
+cursor = #e6e1dc
+background = rgba(24, 19, 24, .6)
 
 # 16 color space
+color0  = #181818
+color1  = #da4939
+color2  = #a5c261
+color3  = #ffc66d
+color4  = #6d9cbe
+color5  = #b6b3eb
+color6  = #519f50
+color7  = #e6e1dc
+color8  = #5e5e5e
+color9  = #da4939
+color10 = #a5c261
+color11 = #ffc66d
+color12 = #6d9cbe
+color13 = #b6b3eb
+color14 = #519f50
+color15 = #f9f7f3
 
-# Black, Gray, Silver, White
-color0  = #000000
-color8  = #808080
-color7  = #c0c0c0
-color15 = #ffffff
-
-# Red
-color1  = #dd0907
-color9  = #dd0907
-
-# Green
-color2  = #1fb714
-color10 = #1fb714
-
-# Yellow
-color3  = #fbf305
-color11 = #fbf305
-
-# Blue
-color4  = #0000d3
-color12 = #0000d3
-
-# Purple
-color5  = #4700a5
-color13 = #4700a5
-
-# Teal
-color6  = #02abea
-color14 = #02abea
-
-# Extra colors
-color16 = #ff6403
-color17 = #90713a
-color18 = #404040
-color19 = #404040
-color20 = #808080
-color21 = #c0c0c0
-
-[options]
-font = Droid Sans Mono 12
+# 256 color space
+color16 = #cc7833
+color17 = #bc9458
+color18 = #272727
+color19 = #3a3a3a
+color20 = #d4cfc9
+color21 = #f4f1ed
