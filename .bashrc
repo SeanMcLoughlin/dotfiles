@@ -1,1 +1,1 @@
-dotfiles/bash/.bashrc
+/home/smclough/.bash/init
