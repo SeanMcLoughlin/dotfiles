@@ -1,6 +1,16 @@
 alias al="vim ~/.zsh_aliases"
 alias sal="source ~/.zsh_aliases"
 
+
+#########################
+# Environment Variables #
+#########################
+
+# To get Xserver to display windows with WSL2
+# https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
+export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+
+
 #####################
 # Command overrides #
 #####################
