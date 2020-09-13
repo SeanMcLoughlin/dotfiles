@@ -1,0 +1,18 @@
+alias al="vim ~/.zsh_aliases"
+alias sal="source ~/.zsh_aliases"
+
+#####################
+# Command overrides #
+#####################
+alias h="history"
+
+
+#######################
+# cd backwards with , #
+#######################
+alias ,="cd .."
+alias ,,="cd ../.."
+alias ,,,="cd ../../.."
+alias ,,,,="cd ../../../.."
+alias ,,,,,="cd ../../../../.."
+
