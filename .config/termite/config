@@ -1,34 +1,30 @@
 [options]
-font = Monospace 14
+font = Monospace 12
+
 
 [colors]
-foreground = #e6e1dc
-foreground_bold = #e6e1dc
-cursor = #e6e1dc
-background = rgba(24, 19, 24, .6)
+cursor = #d8dee9
+cursor_foreground = #2e3440
 
-# 16 color space
-color0  = #181818
-color1  = #da4939
-color2  = #a5c261
-color3  = #ffc66d
-color4  = #6d9cbe
-color5  = #b6b3eb
-color6  = #519f50
-color7  = #e6e1dc
-color8  = #5e5e5e
-color9  = #da4939
-color10 = #a5c261
-color11 = #ffc66d
-color12 = #6d9cbe
-color13 = #b6b3eb
-color14 = #519f50
-color15 = #f9f7f3
+foreground = #d8dee9
+foreground_bold = #d8dee9
+background = #2e3440
 
-# 256 color space
-color16 = #cc7833
-color17 = #bc9458
-color18 = #272727
-color19 = #3a3a3a
-color20 = #d4cfc9
-color21 = #f4f1ed
+highlight = #4c566a
+
+color0  = #3b4252
+color1  = #bf616a
+color2  = #a3be8c
+color3  = #ebcb8b
+color4  = #81a1c1
+color5  = #b48ead
+color6  = #88c0d0
+color7  = #e5e9f0
+color8  = #4c566a
+color9  = #bf616a
+color10 = #a3be8c
+color11 = #ebcb8b
+color12 = #81a1c1
+color13 = #b48ead
+color14 = #8fbcbb
+color15 = #eceff4
