@@ -21,6 +21,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
+Plug 'kshenoy/vim-signature'
 call plug#end()
 
 """""""""""""""""""
