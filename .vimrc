@@ -1,6 +1,14 @@
 " Enable mouse
 set mouse=a
 
+" Make words wrap at linebreaks
+set wrap linebreak
+
+" Tabs are 4 spaces
+set tabstop=4
+set shiftwidth=4
+set softtabstop=0 noexpandtab
+
 """""""""""
 " Plugins "
 """""""""""
@@ -23,6 +31,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'preservim/nerdtree'
 Plug 'itchyny/lightline.vim'
 Plug 'kshenoy/vim-signature'
+Plug 'junegunn/goyo.vim'
 call plug#end()
 
 """""""""""""""""""
