@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-syntastic/syntastic'
 Plug 'rust-lang/rust.vim'
 Plug 'vhda/verilog_systemverilog.vim'
+Plug 'cespare/vim-toml'
 
 " Git
 Plug 'airblade/vim-gitgutter'
