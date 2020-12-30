@@ -15,7 +15,8 @@ alias sal="source ~/.zsh_aliases"
 # Command overrides #
 #####################
 alias h="history"
-
+alias rp="realpath"
+alias xc="xclip"
 
 #######################
 # cd backwards with , #
