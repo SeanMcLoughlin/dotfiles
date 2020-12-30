@@ -1,6 +1,9 @@
 " Enable mouse
 set mouse=a
 
+" Numbers
+set number
+
 " Make words wrap at linebreaks
 set wrap linebreak
 
@@ -20,6 +23,7 @@ Plug 'vim-syntastic/syntastic'
 Plug 'rust-lang/rust.vim'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'cespare/vim-toml'
+Plug 'rhysd/vim-llvm'
 
 " Git
 Plug 'airblade/vim-gitgutter'
