@@ -9,6 +9,7 @@ alias sal="source ~/.zsh_aliases"
 # To get Xserver to display windows with WSL2
 # https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
 # export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+export PATH="$PATH:/opt/modelsim/modelsim_ase/bin"
 
 
 #####################
@@ -17,6 +18,7 @@ alias sal="source ~/.zsh_aliases"
 alias h="history"
 alias rp="realpath"
 alias xc="xclip"
+alias vim="nvim"  # Remove this if neovim is not installed on the system!
 
 #######################
 # cd backwards with , #
@@ -27,3 +29,5 @@ alias ,,,="cd ../../.."
 alias ,,,,="cd ../../../.."
 alias ,,,,,="cd ../../../../.."
 
+# Aliases that I don't want committed to a public repository
+source ~/.private_aliases
