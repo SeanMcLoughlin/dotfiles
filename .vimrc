@@ -12,6 +12,10 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=0 noexpandtab
 
+" smartcase: case sensitive only when specifying caps
+set ignorecase
+set smartcase
+
 """""""""""
 " Plugins "
 """""""""""
