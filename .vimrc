@@ -1,9 +1,6 @@
 " Enable mouse
 set mouse=a
 
-" Numbers
-set number
-
 " Make words wrap at linebreaks
 set wrap linebreak
 
