@@ -9,7 +9,10 @@ alias sal="source ~/.zsh_aliases"
 # To get Xserver to display windows with WSL2
 # https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
 # export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
-export PATH="$PATH:/opt/modelsim/modelsim_ase/bin"
+
+# To get termite to not complain about it's special TERM variable, 
+# override it. If not using termite, you can delete this.
+export TERM=xterm-256color
 
 
 #####################
@@ -18,7 +21,6 @@ export PATH="$PATH:/opt/modelsim/modelsim_ase/bin"
 alias h="history"
 alias rp="realpath"
 alias xc="xclip"
-alias vim="nvim"  # Remove this if neovim is not installed on the system!
 
 #######################
 # cd backwards with , #
