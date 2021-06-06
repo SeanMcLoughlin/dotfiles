@@ -1,0 +1,23 @@
+" Language Specific Features
+Plug 'vim-syntastic/syntastic'
+Plug 'rust-lang/rust.vim'
+Plug 'vhda/verilog_systemverilog.vim'
+Plug 'cespare/vim-toml'
+Plug 'rhysd/vim-llvm'
+Plug 'chrisbra/csv.vim'
+
+" Git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+" Other
+Plug 'junegunn/fzf.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'preservim/nerdtree'
+Plug 'itchyny/lightline.vim'
+Plug 'kshenoy/vim-signature'
+Plug 'junegunn/goyo.vim'
+Plug 'vim-python/python-syntax'
+
+" Colorscheme
+Plug 'arcticicestudio/nord-vim'

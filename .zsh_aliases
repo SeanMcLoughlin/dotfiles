@@ -21,6 +21,7 @@ export TERM=xterm-256color
 alias h="history"
 alias rp="realpath"
 alias xc="xclip"
+alias v="nvim"
 
 #######################
 # cd backwards with , #

@@ -1,5 +1,8 @@
 " Enable mouse
 set mouse=a
+if !has('nvim')
+	set ttymouse=xterm2  " Required to get mouse to work with tmux
+endif
 
 " Make words wrap at linebreaks
 set wrap linebreak
@@ -19,24 +22,15 @@ set smartcase
 " Requires vim-plug to be installed! 
 " https://github.com/junegunn/vim-plug
 call plug#begin('~/.vim/plugged')
-" Language Specific Features
-Plug 'vim-syntastic/syntastic'
-Plug 'rust-lang/rust.vim'
-Plug 'vhda/verilog_systemverilog.vim'
-Plug 'cespare/vim-toml'
-Plug 'rhysd/vim-llvm'
+if !empty(glob("$HOME/.vimrc_plugins"))
+	source $HOME/.vimrc_plugins
+endif
 
-" Git
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+" NVIM-specific plugins
+if !empty(glob("$HOME/.nvimrc_plugins")) && has('nvim')
+	source $HOME/.nvimrc_plugins
+endif
 
-" Other
-Plug 'junegunn/fzf.vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'preservim/nerdtree'
-Plug 'itchyny/lightline.vim'
-Plug 'kshenoy/vim-signature'
-Plug 'junegunn/goyo.vim'
 call plug#end()
 
 """""""""""""""""""
@@ -44,3 +38,11 @@ call plug#end()
 """""""""""""""""""
 " Get lightline to appear
 set laststatus=2
+
+" Colorscheme
+colorscheme nord
+
+" nvim
+if has('nvim')
+	source ~/.nvimrc
+endif
