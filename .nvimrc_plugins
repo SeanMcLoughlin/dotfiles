@@ -1,8 +1,16 @@
 " Collection of common configurations for the Nvim LSP client
 Plug 'neovim/nvim-lspconfig'
 
-" Extentions to built-in LSP, for example, providing type inlay hints
-Plug 'nvim-lua/lsp_extensions.nvim'
-
 " Autocompletion framework for built-in LSP
-Plug 'nvim-lua/completion-nvim'
+Plug 'hrsh7th/nvim-compe'
+
+" Adds extra functionality over rust analyzer
+Plug 'simrat39/rust-tools.nvim'
+
+" Snippet engine to handle LSP snippets
+Plug 'hrsh7th/vim-vsnip'
+
+" Optional
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
