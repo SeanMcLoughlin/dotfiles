@@ -20,6 +20,8 @@ set softtabstop=0 noexpandtab
 set ignorecase
 set smartcase
 
+let mapleader=","
+
 """""""""""
 " Plugins "
 """""""""""
@@ -27,12 +29,12 @@ set smartcase
 " https://github.com/junegunn/vim-plug
 call plug#begin('$HOME/.vim/plugged')
 if !empty(glob("$HOME/.dotfiles/.vimrc_plugins"))
-	source $HOME/.vimrc_plugins
+	source $HOME/.dotfiles/.vimrc_plugins
 endif
 
 " NVIM-specific plugins
 if !empty(glob("$HOME/.dotfiles/.nvimrc_plugins")) && has('nvim')
-	source $HOME/.nvimrc_plugins
+	source $HOME/.dotfiles/.nvimrc_plugins
 endif
 
 " Work-specific plugins
