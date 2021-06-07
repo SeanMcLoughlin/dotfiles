@@ -66,7 +66,9 @@ if has('nvim')
 endif
 
 " Work specific settings
-source $HOME/.vimrc_work
+if !empty(glob("$HOME/.vimrc_work"))
+	source $HOME/.vimrc_work
+endif
 
 """""""""""""""""""""
 " Language Specific "
