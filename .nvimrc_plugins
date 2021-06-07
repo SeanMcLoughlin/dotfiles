@@ -17,3 +17,8 @@ Plug 'nvim-telescope/telescope.nvim'
 
 " Terminal
 Plug 'akinsho/nvim-toggleterm.lua'
+Plug 'voldikss/vim-floaterm'
+
+" FZF
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+Plug 'junegunn/fzf.vim'
