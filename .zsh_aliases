@@ -9,11 +9,11 @@ alias sal="source ~/.zsh_aliases"
 # To get Xserver to display windows with WSL2
 # https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
 # export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
-
-# To get termite to not complain about it's special TERM variable, 
-# override it. If not using termite, you can delete this.
-export TERM=xterm-256color
-
+if type "nvim" &> /dev/null; then
+	export EDITOR=nvim
+else
+	export EDITOR=vim
+fi
 
 #####################
 # Command overrides #

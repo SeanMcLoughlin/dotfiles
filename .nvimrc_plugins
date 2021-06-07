@@ -14,3 +14,6 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+
+" Terminal
+Plug 'akinsho/nvim-toggleterm.lua'
