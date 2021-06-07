@@ -1,3 +1,7 @@
+"""""""""""""""""""
+" Global Settings "
+"""""""""""""""""""
+
 " Enable mouse
 set mouse=a
 if !has('nvim')
@@ -22,13 +26,18 @@ set smartcase
 " Requires vim-plug to be installed! 
 " https://github.com/junegunn/vim-plug
 call plug#begin('$HOME/.vim/plugged')
-if !empty(glob("$HOME/.vimrc_plugins"))
+if !empty(glob("$HOME/.dotfiles/.vimrc_plugins"))
 	source $HOME/.vimrc_plugins
 endif
 
 " NVIM-specific plugins
-if !empty(glob("$HOME/.nvimrc_plugins")) && has('nvim')
+if !empty(glob("$HOME/.dotfiles/.nvimrc_plugins")) && has('nvim')
 	source $HOME/.nvimrc_plugins
+endif
+
+" Work-specific plugins
+if !empty(glob("$HOME/.vimrc_plugins_work"))
+	source $HOME/.vimrc_plugins_work
 endif
 
 call plug#end()
@@ -53,19 +62,15 @@ source $HOME/.vimrc_fzf
 
 " nvim
 if has('nvim')
-	source $HOME/.nvimrc
+	source $HOME/.dotfiles/.nvimrc
 endif
 
+" Work specific settings
+source $HOME/.vimrc_work
 
 """""""""""""""""""""
 " Language Specific "
 """""""""""""""""""""
-function IdeSetup()
-	set number
-endfunction
-
-" Python
-au BufEnter *.py :call IdeSetup()
-
-" Rust
-au BufEnter *.rs :call IdeSetup()
+au BufEnter *.py source $HOME/.dotfiles/.vim/python.vim
+au BufEnter *.rs source $HOME/.dotfiles/.vim/rust.vim
+au BufEnter *.sv,*.vs,*.svh source $HOME/.dotfiles/.vim/systemverilog.vim
