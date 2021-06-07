@@ -6,6 +6,7 @@ Plug 'cespare/vim-toml'
 Plug 'rhysd/vim-llvm'
 Plug 'chrisbra/csv.vim'
 Plug 'vim-python/python-syntax'
+Plug 'davidhalter/jedi-vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
