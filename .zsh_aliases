@@ -5,10 +5,6 @@ alias sal="source ~/.zsh_aliases"
 #########################
 # Environment Variables #
 #########################
-
-# To get Xserver to display windows with WSL2
-# https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
-# export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
 if type "nvim" &> /dev/null; then
 	export EDITOR=nvim
 else
@@ -22,6 +18,13 @@ alias h="history"
 alias rp="realpath"
 alias xc="xclip"
 alias v="nvim"
+
+################
+# Tmux Aliases #
+################
+alias tmas="tmux attach-session -t"
+alias tmasd="tmux attach-session -d -t"
+alias tmls="tmux ls"
 
 #######################
 # cd backwards with , #
