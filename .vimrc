@@ -48,7 +48,8 @@ call plug#end()
 " Plugin Settings "
 """""""""""""""""""
 " Colorscheme
-colorscheme onedark
+" colorscheme onedark
+hi ColorColumn ctermbg=DarkGray
 
 " Get lightline to appear
 set laststatus=2

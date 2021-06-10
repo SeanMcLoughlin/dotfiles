@@ -1,8 +1,8 @@
 " Search files
-nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <leader>p :Files<CR>
 
 " ripgrep within files
-nnoremap <silent> <S-p> :Rg<CR>
+nnoremap <silent> <leader>f :Rg<CR>
 
 " See here for some more things to map:
 " https://dev.to/iggredible/how-to-search-faster-in-vim-with-fzf-vim-36ko
