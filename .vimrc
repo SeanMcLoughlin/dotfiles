@@ -53,6 +53,15 @@ hi ColorColumn ctermbg=DarkGray
 
 " Get lightline to appear
 set laststatus=2
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+      \ }
 
 " Tagbar
 nnoremap <F8> :TagbarToggle<CR>

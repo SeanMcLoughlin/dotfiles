@@ -10,6 +10,7 @@ Plug 'davidhalter/jedi-vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
+Plug 'itchyny/vim-gitbranch'
 Plug 'tpope/vim-fugitive'
 
 " Other
