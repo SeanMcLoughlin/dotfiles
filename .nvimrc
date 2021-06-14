@@ -46,6 +46,7 @@ local opts = {
 }
 
 require('rust-tools').setup(opts)
+require'lspconfig'.svls.setup{}
 EOF
 
 " Code navigation shortcuts
