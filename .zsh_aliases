@@ -10,6 +10,7 @@ if type "nvim" &> /dev/null; then
 else
 	export EDITOR=vim
 fi
+export PATH=$PATH:$HOME/Documents/scripts
 
 #####################
 # Command overrides #
