@@ -14,11 +14,14 @@ set wrap linebreak
 " Tabs are 4 spaces
 set tabstop=4
 set shiftwidth=4
-set softtabstop=0 noexpandtab
+set expandtab
 
 " smartcase: case sensitive only when specifying caps
 set ignorecase
 set smartcase
+
+" Split files like a sane person
+set splitright
 
 let mapleader=","
 
