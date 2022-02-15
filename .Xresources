@@ -1,5 +1,5 @@
 xterm*faceName: Monospace
-xterm*faceSize: 8
+xterm*faceSize: 10
 xterm*ScrollBar: off
 *Xterm*scrollBar: false
 xterm*leftScrollBar: false

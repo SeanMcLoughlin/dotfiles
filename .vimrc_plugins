@@ -6,7 +6,6 @@ Plug 'cespare/vim-toml'
 Plug 'rhysd/vim-llvm'
 Plug 'chrisbra/csv.vim'
 Plug 'vim-python/python-syntax'
-Plug 'davidhalter/jedi-vim'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -14,6 +13,7 @@ Plug 'itchyny/vim-gitbranch'
 Plug 'tpope/vim-fugitive'
 
 " Other
+Plug 'jremmen/vim-ripgrep'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
@@ -21,6 +21,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'junegunn/goyo.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'godlygeek/tabular'
 
 " Colorscheme
 Plug 'joshdick/onedark.vim'
