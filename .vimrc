@@ -25,7 +25,10 @@ set splitright
 
 let mapleader=","
 
-"""""""""""
+filetype plugin on
+syn on
+
+""""""""""
 " Plugins "
 """""""""""
 " Requires vim-plug to be installed! 
@@ -91,3 +94,4 @@ endif
 au BufEnter *.py source $HOME/.dotfiles/.vim/python.vim
 au BufEnter *.rs source $HOME/.dotfiles/.vim/rust.vim
 au BufEnter *.sv,*.vs,*.svh source $HOME/.dotfiles/.vim/systemverilog.vim
+au BufEnter *.aliases set syntax=conf
