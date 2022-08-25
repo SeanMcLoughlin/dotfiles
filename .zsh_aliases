@@ -38,3 +38,9 @@ alias ,,,,,="cd ../../../../.."
 
 # Aliases that I don't want committed to a public repository
 source ~/.private_aliases
+
+# https://github.com/mgunyho/tere
+tere() {
+    local result=$(~/.cargo/bin/tere "$@")
+    [ -n "$result" ] && cd -- "$result"
+}

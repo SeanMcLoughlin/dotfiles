@@ -1,5 +1,6 @@
 set syntax=verilog_systemverilog
-set tabstop=4
+set tabstop=2
+set shiftwidth=2
+set expandtab
 set colorcolumn=120
-set softtabstop=0 noexpandtab
 set number
