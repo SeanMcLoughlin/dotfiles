@@ -1,9 +1,3 @@
-font:
-  normal:
-    family: Hack
-    style: Regular
-  size: 14
 key_bindings:
   - { key: N, mods: Command, command: { program: "open", args: ["-n", "/Applications/Alacritty.app"] } }
-import:
-  - ~/.config/alacritty/themes/one_dark.yml
+
