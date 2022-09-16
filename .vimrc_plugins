@@ -24,4 +24,4 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'godlygeek/tabular'
 
 " Colorscheme
-Plug 'joshdick/onedark.vim'
+Plug 'rakr/vim-one'
