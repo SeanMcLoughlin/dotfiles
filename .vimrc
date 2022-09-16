@@ -23,6 +23,13 @@ set smartcase
 " Split files like a sane person
 set splitright
 
+" Exit more quickly
+inoremap <C-q> <esc>:qa!<cr>
+nnoremap <C-q> :qa!<cr>"
+
+" Double escape clears search highlighting
+nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
+
 let mapleader=","
 
 filetype plugin on
@@ -54,7 +61,6 @@ call plug#end()
 " Plugin Settings "
 """""""""""""""""""
 " Colorscheme
-" colorscheme onedark
 hi ColorColumn ctermbg=DarkGray
 
 " Get lightline to appear
@@ -95,3 +101,4 @@ au BufEnter *.py source $HOME/.dotfiles/.vim/python.vim
 au BufEnter *.rs source $HOME/.dotfiles/.vim/rust.vim
 au BufEnter *.sv,*.vs,*.svh source $HOME/.dotfiles/.vim/systemverilog.vim
 au BufEnter *.aliases set syntax=conf
+au BufNewFile,BufRead *.md set filetype=markdown
