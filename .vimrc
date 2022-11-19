@@ -16,6 +16,9 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Force backspace to work
+set backspace=indent,eol,start
+
 " smartcase: case sensitive only when specifying caps
 set ignorecase
 set smartcase
@@ -27,6 +30,8 @@ set splitright
 inoremap <C-q> <esc>:qa!<cr>
 nnoremap <C-q> :qa!<cr>"
 
+" Enable highlight searching, but...
+set hlsearch
 " Double escape clears search highlighting
 nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
 
@@ -46,9 +51,10 @@ if !empty(glob("$HOME/.dotfiles/.vimrc_plugins"))
 endif
 
 " NVIM-specific plugins
-if !empty(glob("$HOME/.dotfiles/.nvimrc_plugins")) && has('nvim')
-	source $HOME/.dotfiles/.nvimrc_plugins
-endif
+" EDIT: Now I'm using packer.nvim which installs nvim plugins with lua
+" if !empty(glob("$HOME/.dotfiles/.nvimrc_plugins")) && has('nvim')
+" 	source $HOME/.dotfiles/.nvimrc_plugins
+" endif
 
 " Work-specific plugins
 if !empty(glob("$HOME/.vimrc_plugins_work"))
@@ -60,20 +66,6 @@ call plug#end()
 """""""""""""""""""
 " Plugin Settings "
 """""""""""""""""""
-" Colorscheme
-hi ColorColumn ctermbg=DarkGray
-
-" Get lightline to appear
-set laststatus=2
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name'
-      \ },
-      \ }
 
 " Tagbar
 nnoremap <F8> :TagbarToggle<CR>
@@ -83,6 +75,17 @@ nnoremap <F7> :NERDTreeToggle<CR>
 
 " FZF
 source $HOME/.vimrc_fzf
+
+" Powerline
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+set laststatus=2
+
+" Yank to clipboard
+set clipboard+=unnamedplus
+let g:oscyank_term = 'default'
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 
 " nvim
 if has('nvim')

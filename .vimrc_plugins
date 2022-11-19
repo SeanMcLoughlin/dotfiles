@@ -22,6 +22,9 @@ Plug 'kshenoy/vim-signature'
 Plug 'junegunn/goyo.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'godlygeek/tabular'
+Plug 'google/vim-searchindex'
+Plug 'powerline/powerline'
+Plug 'ojroques/vim-oscyank'
 
-" Colorscheme
-Plug 'rakr/vim-one'
+" Do NOT use color scheme plugins!
+" Use a terminal color scheme so that system-wide light/dark mode works!
