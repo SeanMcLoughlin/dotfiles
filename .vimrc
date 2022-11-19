@@ -2,29 +2,21 @@
 " Global Settings "
 """""""""""""""""""
 
-" Enable mouse
-set mouse=a
-if !has('nvim')
-	set ttymouse=xterm2  " Required to get mouse to work with tmux
-endif
-
-" Make words wrap at linebreaks
-set wrap linebreak
+let mapleader="," " Set a leader command for other key bindings
+set mouse=a " Enable mouse
+set ttymouse=xterm2  " Required to enable mouse with tmux
+set wrap linebreak " Make words wrap at linebreaks
+set backspace=indent,eol,start " Force backspace to work
+set ignorecase " Search case insensitively
+set smartcase " Case sensitive only when specifying caps
+set splitright " Split files like a sane person
+filetype plugin on 
+syn on " Enable syntax highlighting
 
 " Tabs are 4 spaces
 set tabstop=4
 set shiftwidth=4
 set expandtab
-
-" Force backspace to work
-set backspace=indent,eol,start
-
-" smartcase: case sensitive only when specifying caps
-set ignorecase
-set smartcase
-
-" Split files like a sane person
-set splitright
 
 " Exit more quickly
 inoremap <C-q> <esc>:qa!<cr>
@@ -35,28 +27,17 @@ set hlsearch
 " Double escape clears search highlighting
 nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
 
-let mapleader=","
-
-filetype plugin on
-syn on
 
 """"""""""
 " Plugins "
 """""""""""
-" Requires vim-plug to be installed! 
-" https://github.com/junegunn/vim-plug
+" Requires vim-plug to be installed! See: https://github.com/junegunn/vim-plug
 call plug#begin('$HOME/.vim/plugged')
 if !empty(glob("$HOME/.dotfiles/.vimrc_plugins"))
 	source $HOME/.dotfiles/.vimrc_plugins
 endif
 
-" NVIM-specific plugins
-" EDIT: Now I'm using packer.nvim which installs nvim plugins with lua
-" if !empty(glob("$HOME/.dotfiles/.nvimrc_plugins")) && has('nvim')
-" 	source $HOME/.dotfiles/.nvimrc_plugins
-" endif
-
-" Work-specific plugins
+" Work-specific plugins (not synced with .dotfiles)
 if !empty(glob("$HOME/.vimrc_plugins_work"))
 	source $HOME/.vimrc_plugins_work
 endif
@@ -86,11 +67,6 @@ set laststatus=2
 set clipboard+=unnamedplus
 let g:oscyank_term = 'default'
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
-
-" nvim
-if has('nvim')
-	source $HOME/.dotfiles/.nvimrc
-endif
 
 " Work specific settings
 if !empty(glob("$HOME/.vimrc_work"))
