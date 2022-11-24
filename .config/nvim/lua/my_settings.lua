@@ -1,5 +1,5 @@
 local set = vim.opt
-local global = vim.g
+local let = vim.g
 
 -- Functional wrapper for mapping custom keybindings
 function map(mode, lhs, rhs, opts)
@@ -10,12 +10,10 @@ function map(mode, lhs, rhs, opts)
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-global.mapleader = ","
-
+let.mapleader=" "
 set.number = true
 set.tabstop = 4
 set.softtabstop = 4
 set.shiftwidth = 4
 set.expandtab = true
 
-map('n', '<leader>b', ':NvimTreeToggle<CR>')
