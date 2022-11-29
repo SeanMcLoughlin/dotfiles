@@ -10,7 +10,9 @@ function map(mode, lhs, rhs, opts)
   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-let.mapleader=" "
+let.mapleader=","
+set.ignorecase = true
+set.smartcase = true
 set.number = true
 set.tabstop = 4
 set.softtabstop = 4
