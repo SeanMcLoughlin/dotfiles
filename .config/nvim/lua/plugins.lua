@@ -61,7 +61,6 @@ require("packer").startup(function(use)
         "nvim-telescope/telescope.nvim", 
         requires = { {'nvim-lua/plenary.nvim'} }
     }   
-    use("nvim-treesitter/nvim-treesitter")
     use("preservim/tagbar")
 	use {
 	  "folke/trouble.nvim",
@@ -102,6 +101,9 @@ require("packer").startup(function(use)
 			'nvim-tree/nvim-web-devicons', -- optional, for file icons
         },
     }
+    use { 'junegunn/fzf', run = ":call fzf#install()" }
+    use { 'junegunn/fzf.vim' }
+    use { 'ngemily/vim-vp4' }
 end)
 
 -- the first run will install packer and our plugins
