@@ -1,8 +1,0 @@
-require('plugin_setup.mason_setup')
-require('plugin_setup.nvim-cmp_setup')
-require('plugin_setup.rust-tools_setup')
-require('plugin_setup.completion_framework_setup')
-require('plugin_setup.nvim-tree_setup')
-require('plugin_setup.telescope_setup')
-require('plugin_setup.tagbar_setup')
-require('plugin_setup.fzf_setup')
