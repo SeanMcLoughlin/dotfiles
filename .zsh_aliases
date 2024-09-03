@@ -7,6 +7,7 @@ alias sal="source ~/.zsh_aliases"
 #########################
 if type "nvim" &> /dev/null; then
 	export EDITOR=nvim
+        alias vim=nvim
 else
 	export EDITOR=vim
 fi
@@ -38,9 +39,4 @@ alias ,,,,,="cd ../../../../.."
 
 # Aliases that I don't want committed to a public repository
 source ~/.private_aliases
-
-# https://github.com/mgunyho/tere
-tere() {
-    local result=$(~/.cargo/bin/tere "$@")
-    [ -n "$result" ] && cd -- "$result"
-}
+set HOMEBREW_NO_ENV_HINTS
