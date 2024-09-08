@@ -657,7 +657,7 @@
     "Alpha Component" : 1,
     "Green Component" : 0.35333043336868286
   },
-  "Description" : "Default",
+  "Description" : "MyProfile",
   "Ansi 7 Color (Dark)" : {
     "Red Component" : 0.6588235294117647,
     "Color Space" : "sRGB",
@@ -670,7 +670,7 @@
     "Blue Component" : 0.94509803920000002,
     "Red Component" : 0.99215686270000003
   },
-  "Name" : "Default",
+  "Name" : "MyProfile",
   "Use Tab Color (Dark)" : false,
   "Transparency" : 0,
   "Horizontal Spacing" : 1,
