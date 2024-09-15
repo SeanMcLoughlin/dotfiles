@@ -39,4 +39,4 @@ alias ,,,,,="cd ../../../../.."
 
 # Aliases that I don't want committed to a public repository
 source ~/.private_aliases
-set HOMEBREW_NO_ENV_HINTS
+export HOMEBREW_NO_ENV_HINTS=1
