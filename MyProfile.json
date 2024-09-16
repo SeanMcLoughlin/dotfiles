@@ -673,7 +673,7 @@
   },
   "Name" : "MyProfile",
   "Use Tab Color (Dark)" : false,
-  "Transparency" : 0.051861702127659573,
+  "Transparency" : 0.30319148936170215,
   "Horizontal Spacing" : 1,
   "Cursor Color (Dark)" : {
     "Red Component" : 0.6588235294117647,
@@ -796,7 +796,7 @@
 
   ],
   "Cursor Boost (Light)" : 0,
-  "Blur Radius" : 49.670079787234044,
+  "Blur Radius" : 64,
   "Use Tab Color (Light)" : false,
   "Ansi 6 Color (Light)" : {
     "Red Component" : 0,
