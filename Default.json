@@ -461,7 +461,7 @@
     }
   },
   "Visual Bell" : true,
-  "Only The Default BG Color Uses Transparency" : false,
+  "Only The Default BG Color Uses Transparency" : true,
   "Cursor Text Color" : {
     "Green Component" : 0.08235294371843338,
     "Red Component" : 0.08235294371843338,
@@ -671,9 +671,9 @@
     "Red Component" : 0.99215686270000003,
     "Blue Component" : 0.94509803920000002
   },
-  "Name" : "MyProfile",
+  "Name" : "Default",
   "Use Tab Color (Dark)" : false,
-  "Transparency" : 0.30319148936170215,
+  "Transparency" : 0.10031582446808511,
   "Horizontal Spacing" : 1,
   "Cursor Color (Dark)" : {
     "Red Component" : 0.6588235294117647,
