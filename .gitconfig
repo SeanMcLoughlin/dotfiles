@@ -13,3 +13,8 @@
 	navigate = true
 [merge]
 	conflictStyle = zdiff3
+[alias]
+    cane = commit --amend --no-edit
+	hs = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+[protocol "file"]
+	allow = always
