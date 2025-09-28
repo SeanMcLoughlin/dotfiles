@@ -1,8 +1,10 @@
 set -U fish_greeting # Disable help message at startup
 
 # Aliases for editing aliases and sourcing them
-alias al='vim ~/.config/fish/config.fish'
-alias sal='source ~/.config/fish/config.fish'
+alias cfg='vim ~/.config/fish/config.fish'
+alias scfg='source ~/.config/fish/config.fish'
+
+alias tmuxcfg='vim ~/.tmux.conf'
 
 
 #########################
@@ -14,6 +16,7 @@ if command -v nvim &> /dev/null
 else
     set -x EDITOR vim
 end
+set -x VISUAL $EDITOR
 
 set -x PATH $PATH $HOME/Documents/scripts
 
@@ -25,6 +28,7 @@ alias rp 'realpath'
 alias xc 'xclip'
 alias v 'nvim'
 alias icp 'it2copy'
+alias ls 'eza --icons'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
 
 ################
@@ -46,7 +50,15 @@ alias ,,,,, 'cd ../../../../..'
 ###############
 # LLM Aliases #
 ############### 
-alias llmsyscmd "\"Respond with nothing but the command to run.\""
+abbr --position anywhere --set-cursor --add llmshcmd "\"Respond with nothing but the command to run.\""
 
 set -x HOMEBREW_NO_ENV_HINTS 1
+
 source ~/.config/fish/private_config.fish
+
+test -e /Users/spm/.iterm2_shell_integration.fish ; and source /Users/spm/.iterm2_shell_integration.fish ; or true
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/spm/.lmstudio/bin
+# End of LM Studio CLI section
+
