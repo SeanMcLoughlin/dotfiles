@@ -1,35 +1,33 @@
 set -U fish_greeting # Disable help message at startup
 
 # Aliases for editing aliases and sourcing them
-alias cfg='vim ~/.config/fish/config.fish'
+alias cfg='$EDITOR ~/.config/fish/config.fish'
 alias scfg='source ~/.config/fish/config.fish'
 
-alias tmuxcfg='vim ~/.tmux.conf'
-
+alias tmuxcfg='$EDITOR ~/.tmux.conf'
 
 #########################
 # Environment Variables #
 #########################
-if command -v nvim &> /dev/null
-    set -x EDITOR nvim
-    alias vim 'nvim'
-else
-    set -x EDITOR vim
-end
-set -x VISUAL $EDITOR
-
+set -x EDITOR hx
 set -x PATH $PATH $HOME/Documents/scripts
 
 #####################
 # Command overrides #
 #####################
-alias h 'history'
-alias rp 'realpath'
-alias xc 'xclip'
-alias v 'nvim'
-alias icp 'it2copy'
-alias ls 'eza --icons'
+alias e $EDITOR
+alias edit $EDITOR
+alias h history
+alias rp realpath
+alias xc xclip
+alias v vim
+alias icp it2copy
+alias ls eza
+alias l 'eza --icons'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
+function mkcd
+    mkdir -p $argv && cd $argv[-1]
+end
 
 ################
 # Tmux Aliases #
@@ -56,9 +54,6 @@ set -x HOMEBREW_NO_ENV_HINTS 1
 
 source ~/.config/fish/private_config.fish
 
-test -e /Users/spm/.iterm2_shell_integration.fish ; and source /Users/spm/.iterm2_shell_integration.fish ; or true
-
 # Added by LM Studio CLI (lms)
 set -gx PATH $PATH /Users/spm/.lmstudio/bin
 # End of LM Studio CLI section
-
