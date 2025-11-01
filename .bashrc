@@ -1,1 +1,0 @@
-/home/smclough/.bash/init
