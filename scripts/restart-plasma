@@ -1,3 +1,0 @@
-#!/bin/sh
-sudo kwin_x11 --replace & disown
-sudo plasmashell --replace & disown
