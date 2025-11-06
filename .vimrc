@@ -4,7 +4,6 @@
 
 let mapleader="," " Set a leader command for other key bindings
 set mouse=a " Enable mouse
-set ttymouse=xterm2  " Required to enable mouse with tmux
 set wrap linebreak " Make words wrap at linebreaks
 set backspace=indent,eol,start " Force backspace to work
 set ignorecase " Search case insensitively
@@ -50,18 +49,6 @@ call plug#end()
 
 " Tagbar
 nnoremap <F8> :TagbarToggle<CR>
-
-" NerdTree
-nnoremap <F7> :NERDTreeToggle<CR>
-
-" FZF
-source $HOME/.vimrc_fzf
-
-" Powerline
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-set laststatus=2
 
 " Yank to clipboard
 set clipboard+=unnamedplus
