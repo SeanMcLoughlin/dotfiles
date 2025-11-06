@@ -15,7 +15,6 @@ Plug 'tpope/vim-fugitive'
 " Other
 Plug 'jremmen/vim-ripgrep'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'preservim/nerdtree'
 Plug 'preservim/tagbar'
 Plug 'itchyny/lightline.vim'
 Plug 'kshenoy/vim-signature'
@@ -23,7 +22,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'godlygeek/tabular'
 Plug 'google/vim-searchindex'
-Plug 'powerline/powerline'
 Plug 'ojroques/vim-oscyank'
 
 " Do NOT use color scheme plugins!
