@@ -9,7 +9,7 @@ alias tmuxcfg='$EDITOR ~/.tmux.conf'
 #########################
 # Environment Variables #
 #########################
-set -x EDITOR hx
+set -x EDITOR vim
 set -x PATH $PATH $HOME/Documents/scripts
 
 #####################
@@ -48,8 +48,6 @@ alias ,,,,, 'cd ../../../../..'
 ###############
 # LLM Aliases #
 ############### 
-abbr --position anywhere --set-cursor --add llmshcmd "\"Respond with nothing but the command to run.\""
-
 set -x HOMEBREW_NO_ENV_HINTS 1
 
 source ~/.config/fish/private_config.fish
