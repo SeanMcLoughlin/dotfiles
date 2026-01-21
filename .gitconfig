@@ -2,16 +2,17 @@
 	name = Sean McLoughlin
 	email = smcloughlin@tenstorrent.com
 [init]
-	defaultBranch = main
+    defaultBranch = main
+[pull]
+    rebase = true
 [core]
 	pager = delta
 [interactive]
 	diffFilter = delta --color-only
 [delta]
-	navigate = true
+    navigate = true
 [alias]
-    cane = commit --amend --no-edit
-    hs = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    # Various uninteresting shortcuts
     c = commit
     p = pull
     a = add
@@ -19,10 +20,30 @@
     st = status
     l = log
     wt = worktree
+
+    hs = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    myhs = log --author=$(git config --get user.name)
     fstatus = status --porcelain --branch --untracked-files=no
+
+    # quickly amend the most recent commit with the contents of the index.
     cane = commit --amend --no-edit
     co = checkout
+
+    # Get the latest tag -- the "release"
     rel = describe --tags --abrev=0
+
+    # List all git aliases in .gitconfig
     lsalias = config --get-regexp ^alias
+
+    # List all tags
     tags = for-each-ref --sort=creatordate --format '%(refname) %(creatordate)' refs/tags
+
+    # Commits made via `--fixup` or `--squash` will be placed in the right locations automatically.
+    rebi = rebase --interactive --autosquash
+
+    # Clears out any branches that have been deleted on your remotes
+    fetchp = fetch --prune --all
+
+    # Completely synchronize and update all submodules
+    subu = "!f() { git submodule sync --recursive && git submodule update --init --recursive; }; f"
 
