@@ -1,5 +1,5 @@
-alias al="vim ~/.zsh_aliases"
-alias sal="source ~/.zsh_aliases"
+alias cfg="vim ~/.zsh_aliases"
+alias scfg="source ~/.zsh_aliases"
 
 
 #########################
@@ -41,5 +41,6 @@ alias ,,,,,="cd ../../../../.."
 
 # Aliases that I don't want committed to a public repository
 source ~/.private_aliases
+source ~/.tokens
 export HOMEBREW_NO_ENV_HINTS=1
 
