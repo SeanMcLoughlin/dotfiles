@@ -13,6 +13,7 @@ depends = []
 ".gitconfig" = "~/.gitconfig"
 
 # Vim directory files (individual files only, not plugged directory)
+".vim/autoload/plug.vim" = "~/.vim/autoload/plug.vim"
 ".vim/python.vim" = "~/.vim/python.vim"
 ".vim/rust.vim" = "~/.vim/rust.vim"
 ".vim/systemverilog.vim" = "~/.vim/systemverilog.vim"
