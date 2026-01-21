@@ -1,0 +1,28 @@
+[helpers]
+
+[default]
+depends = []
+
+[default.files]
+# Shell configurations
+".zshrc" = "~/.zshrc"
+".zshrc_spm" = "~/.zshrc_spm"
+".vimrc" = "~/.vimrc"
+".vimrc_plugins" = "~/.vimrc_plugins"
+".tmux.conf" = "~/.tmux.conf"
+".gitconfig" = "~/.gitconfig"
+
+# Vim directory files (individual files only, not plugged directory)
+".vim/python.vim" = "~/.vim/python.vim"
+".vim/rust.vim" = "~/.vim/rust.vim"
+".vim/systemverilog.vim" = "~/.vim/systemverilog.vim"
+".vim/yaml.vim" = "~/.vim/yaml.vim"
+
+# Config directories (deploy entire directories recursively)
+".config/fish" = { target = "~/.config/fish", type = "symbolic" }
+".config/helix" = { target = "~/.config/helix", type = "symbolic" }
+
+[default.variables]
+
+[settings]
+default_target_type = "automatic"
