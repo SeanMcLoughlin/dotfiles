@@ -25,7 +25,13 @@ alias icp it2copy
 alias ls eza
 alias l 'eza --icons'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
-alias cdr "cd $(git rev-parse --show-toplevel)"
+function cdr
+    if git rev-parse --show-toplevel > /dev/null 2>&1
+        cd (git rev-parse --show-toplevel)
+    else
+        echo "Not a git repository"
+    end
+end
 function mkcd
     mkdir -p $argv && cd $argv[-1]
 end

@@ -5,6 +5,11 @@
 .vim/plugged/
 .vim/autoload/
 
+# Fisher plugin files (managed by fisher, only track fish_plugins)
+.config/fish/completions/
+.config/fish/functions/
+.config/fish/conf.d/
+
 .dotter/local.toml
 .dotter/cache.toml
 .dotter/cache
