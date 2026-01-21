@@ -25,6 +25,7 @@ alias icp it2copy
 alias ls eza
 alias l 'eza --icons'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
+alias cdr "cd $(git rev-parse --show-toplevel)"
 function mkcd
     mkdir -p $argv && cd $argv[-1]
 end
