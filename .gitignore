@@ -1,2 +1,6 @@
 .DS_Store
+.config/fish/private_config.fish
+.config/fish/fish_variables
 
+.vim/plugged/
+.vim/autoload/
