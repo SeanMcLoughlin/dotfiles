@@ -4,3 +4,9 @@
 
 .vim/plugged/
 .vim/autoload/
+
+.dotter/local.toml
+.dotter/cache.toml
+.dotter/cache
+
+.claude
