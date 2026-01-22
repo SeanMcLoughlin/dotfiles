@@ -19,7 +19,8 @@ alias e $EDITOR
 alias edit $EDITOR
 alias h history
 alias rp realpath
-alias xc xclip
+alias copy pbcopy
+alias paste pbpaste
 alias v vim
 alias icp it2copy
 alias ls eza
