@@ -7,6 +7,7 @@ depends = []
 # Shell configurations
 ".zshrc" = "~/.zshrc"
 ".zshrc_spm" = "~/.zshrc_spm"
+".bashrc_spm" = "~/.bashrc_spm"
 ".vimrc" = "~/.vimrc"
 ".vimrc_plugins" = "~/.vimrc_plugins"
 ".tmux.conf" = "~/.tmux.conf"
