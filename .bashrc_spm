@@ -1,0 +1,69 @@
+WORKSOC="/proj_soc/user_dev/smcloughlin"
+WORKRISC="/proj_risc/user_dev/smcloughlin"
+WORK=$WORKRISC
+EDITOR="vim"
+PROMPT_COMMAND='PS1_CMD1=$(git branch --show-current 2>/dev/null)'; PS1='[\[\e[3m\]\h\[\e[0m\] \[\e[1m\]\w\[\e[0m\] (${PS1_CMD1})] \n\[\e[1;2m\]󱞩\[\e[0m\] '
+#source /tools_soc/tt/bin/bashrc  # This was used in SOC servers but not riscv ones
+
+# Shell options
+shopt -s autocd  # goto directory without typing cd
+shopt -s direxpand  # expand directories with tab
+
+alias cfg="vim ~/.bashrc_spm"
+alias scfg="source ~/.bashrc"
+pathappend() {
+  for ARG in "$@"
+  do
+  if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"*  ]]; then
+    PATH="${PATH:+"$PATH:"}$ARG"
+  fi
+  done
+}
+export pathappend
+pathprepend() {
+  for ARG in "$@"
+  do
+  if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"*  ]]; then
+    PATH="$ARG:${PATH:+"$PATH:"}"
+  fi
+  done
+}
+export pathprepend
+
+pathappend /tools_risc/common/bin
+pathprepend ~/bin
+pathprepend ~/bin/bin  # Vim installed itself weirdly like this
+pathprepend ~/.cargo/bin
+pathprepend ~/.local/bin
+pathprepend /tools_vendor/FOSS/node/22.14.0/bin
+pathprepend ~/.npm-global/bin
+
+# Aliases
+
+alias e="$EDITOR"
+alias edit="$EDITOR"
+alias rp="realpath"
+alias tm='tmux'
+alias tmas='tmux attach-session -t'
+alias h="history"
+alias v="vim"
+alias code="${VSCODE_GIT_ASKPASS_NODE%/*}/bin/remote-cli/code"
+
+mkcd () {
+  mkdir -p "$@" && cd "$@"
+}
+
+cdr() {
+  if git rev-parse --show-toplevel > /dev/null 2>&1; then
+    cd "$(git rev-parse --show-toplevel)"
+  else
+    echo "Not a git repository"
+  fi
+}
+
+alias ,="cd .."
+alias ,,="cd ../.."
+alias ,,,="cd ../../.."
+alias ,,,,="cd ../../../.."
+alias ,,,,,="cd ../../../../.."
+
