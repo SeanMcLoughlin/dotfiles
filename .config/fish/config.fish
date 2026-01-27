@@ -63,3 +63,6 @@ source ~/.config/fish/private_config.fish
 # Added by LM Studio CLI (lms)
 set -gx PATH $PATH /Users/spm/.lmstudio/bin
 # End of LM Studio CLI section
+
+# Created by `pipx` on 2026-01-23 21:15:22
+set PATH $PATH /Users/smcloughlin/.local/bin
