@@ -25,6 +25,10 @@ depends = []
 ".config/helix" = { target = "~/.config/helix", type = "symbolic" }
 ".config/nvim" = { target = "~/.config/nvim", type = "symbolic" }
 
+# Zed editor (individual files only, not AI features)
+".config/zed/settings.json" = "~/.config/zed/settings.json"
+".config/zed/tasks.json" = "~/.config/zed/tasks.json"
+
 [default.variables]
 
 [settings]

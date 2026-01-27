@@ -1,0 +1,54 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "ssh_connections": [
+    {
+      "host": "work",
+      "args": [],
+      "projects": [
+        {
+          "paths": [
+            "/proj_risc/user_dev/smcloughlin/repos/riscv_cluster/./"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "code",
+      "args": [],
+      "projects": []
+    }
+  ],
+  "sticky_scroll": {
+    "enabled": true
+  },
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  "terminal": {
+    "shell": {
+      "program": "fish"
+    }
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "ui_font_family": "iMWritingQuat Nerd Font",
+  "buffer_font_family": "Maple Mono",
+  "ui_font_size": 15.0,
+  "buffer_font_size": 13.0,
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha",
+  },
+}
