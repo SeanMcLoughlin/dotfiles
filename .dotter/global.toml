@@ -23,6 +23,7 @@ depends = []
 # Config directories (deploy entire directories recursively)
 ".config/fish" = { target = "~/.config/fish", type = "symbolic" }
 ".config/helix" = { target = "~/.config/helix", type = "symbolic" }
+".config/nvim" = { target = "~/.config/nvim", type = "symbolic" }
 
 [default.variables]
 
