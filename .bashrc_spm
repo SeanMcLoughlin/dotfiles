@@ -3,7 +3,9 @@ WORKRISC="/proj_risc/user_dev/smcloughlin"
 WORK=$WORKRISC
 EDITOR="vim"
 PROMPT_COMMAND='PS1_CMD1=$(git branch --show-current 2>/dev/null)'; PS1='[\[\e[3m\]\h\[\e[0m\] \[\e[1m\]\w\[\e[0m\] (${PS1_CMD1})] \n\[\e[1;2m\]󱞩\[\e[0m\] '
-#source /tools_soc/tt/bin/bashrc  # This was used in SOC servers but not riscv ones
+
+mkdir -p /tmp/$USER 2>/dev/null || true
+export TMPDIR="/tmp/$USER"
 
 # Shell options
 shopt -s autocd  # goto directory without typing cd
