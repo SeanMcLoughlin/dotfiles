@@ -20,6 +20,7 @@
     st = status
     l = log
     wt = worktree
+    rb = rebase
 
     hs = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
     myhs = log --author=$(git config --get user.name)
