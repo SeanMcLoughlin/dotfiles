@@ -1,4 +1,5 @@
 set -U fish_greeting # Disable help message at startup
+fish_config theme choose "Catppuccin Mocha"
 
 # Aliases for editing aliases and sourcing them
 alias cfg='$EDITOR ~/.config/fish/config.fish'
