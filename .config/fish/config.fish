@@ -61,6 +61,11 @@ set -x HOMEBREW_NO_ENV_HINTS 1
 
 source ~/.config/fish/private_config.fish
 
+# mise
+if command -q mise
+    mise activate fish | source
+end
+
 # Added by LM Studio CLI (lms)
 set -gx PATH $PATH /Users/spm/.lmstudio/bin
 # End of LM Studio CLI section
