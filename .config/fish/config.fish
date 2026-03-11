@@ -10,7 +10,13 @@ alias tmuxcfg='$EDITOR ~/.tmux.conf'
 #########################
 # Environment Variables #
 #########################
-set -x EDITOR vim
+if command -q hx
+    set -x EDITOR hx
+else if command -q nvim
+    set -x EDITOR nvim
+else
+    set -x EDITOR vim
+end
 set -x PATH $PATH $HOME/Documents/scripts
 
 #####################
