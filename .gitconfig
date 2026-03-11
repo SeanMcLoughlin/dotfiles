@@ -51,3 +51,5 @@
     # Delete local branches that have already been merged into main, aside from "main" and "develop" branches.
     rm-stale-branches = "!git branch --merged origin/main | grep -vE \"^\\s*(\\*|main|develop)\" | xargs -n 1 git branch -d"
 
+[push]
+	autoSetupRemote = true
