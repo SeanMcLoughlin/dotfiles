@@ -51,5 +51,11 @@
     # Delete local branches that have already been merged into main, aside from "main" and "develop" branches.
     rm-stale-branches = "!git branch --merged origin/main | grep -vE \"^\\s*(\\*|main|develop)\" | xargs -n 1 git branch -d"
 
+    # Delete local and remote branches that have already been merged.
+    rm-branch = "!f() { git branch -d \"$1\" && git push origin --delete \"$1\"; }; f"
+
+    # Forcibly delete local and remote branches, even if they have not yet been merged. This requires a confirmation prompt to avoid accidental data loss!
+    rm-rf-branch = "!f() { read -p \"Delete branch '$1' locally and remotely? THIS IS AN IRREVERSIBLE ACTION!(y/n) \" -n 1 -r && echo && [[ $REPLY =~ ^[Yy]$ ]] && git branch -D \"$1\" && git push origin --delete \"$1\"; }; f"
+
 [push]
 	autoSetupRemote = true
