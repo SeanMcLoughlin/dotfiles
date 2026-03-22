@@ -3,3 +3,7 @@ theme = "catppuccin_frappe"
 [editor]
 true-color = true
 bufferline = "multiple"
+
+[editor.soft-wrap]
+enable = true
+wrap-indicator = ""
