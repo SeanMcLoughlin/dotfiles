@@ -4,6 +4,9 @@
   },
   "permissions": {
     "allow": [
+      "Read(~/.dotfiles/**)",
+      "Read(~/.tart/**)",
+      "Read(~/.config/**)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:gitlab.com)",
