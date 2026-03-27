@@ -174,5 +174,6 @@
         "~/.claude"
       ]
     }
-  }
+  },
+  "showClearContextOnPlanAccept": true
 }
