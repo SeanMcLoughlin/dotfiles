@@ -158,5 +158,21 @@
         "repo": "max-sixty/worktrunk"
       }
     }
+  },
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "allowWrite": [
+        "~/repos",
+        "~/.dotfiles"
+      ],
+      "allowRead": [
+        "~/repos",
+        "~/Documents/specs",
+        "~/Documents/ai-context",
+        "~/.dotfiles",
+        "~/.claude"
+      ]
+    }
   }
 }
