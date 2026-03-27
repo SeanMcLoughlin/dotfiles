@@ -138,7 +138,7 @@
       "Bash(glab version:*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
