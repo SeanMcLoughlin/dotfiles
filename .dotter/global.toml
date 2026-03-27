@@ -27,6 +27,9 @@ depends = []
 # Claude Code
 ".claude/settings.json" = "~/.claude/settings.json"
 
+# Worktrunk
+".config/worktrunk/config.toml" = { target = "~/.config/worktrunk/config.toml", type = "symbolic" }
+
 # Zed editor (individual files only, not AI features)
 ".config/zed/settings.json" = "~/.config/zed/settings.json"
 ".config/zed/tasks.json" = "~/.config/zed/tasks.json"
