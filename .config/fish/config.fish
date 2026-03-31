@@ -51,6 +51,11 @@ alias tmas 'tmux attach-session -t'
 alias tmasd 'tmux attach-session -d -t'
 alias tmls 'tmux ls'
 
+##############
+# Difftastic #
+##############
+set -x DFT_OVERRIDE '*.svh:verilog'
+
 #######################
 # cd backwards with , #
 #######################
