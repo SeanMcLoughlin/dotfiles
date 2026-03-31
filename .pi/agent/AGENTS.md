@@ -1,0 +1,9 @@
+- Use `rg` (ripgrep) instead of `grep` for searching.
+- You have a `subagent` tool available. Use it proactively when tasks would benefit from isolated context or parallel work:
+  - Use `scout` (Haiku, fast) for codebase recon before complex changes
+  - Use `planner` to create implementation plans from scout findings
+  - Use `worker` for self-contained subtasks that don't need your full context
+  - Use `reviewer` for code review after changes
+  - Use parallel mode when multiple independent investigations are needed
+  - Use chain mode for scout → planner → worker workflows
+  - Don't use subagents for simple tasks you can handle directly

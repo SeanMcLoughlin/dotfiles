@@ -30,6 +30,14 @@ depends = []
 # Shared agent skills (symlinked from ~/.claude/skills and ~/.pi/agent/skills)
 ".skills" = { target = "~/.skills", type = "symbolic" }
 
+# Pi coding agent
+".pi/agent/AGENTS.md" = "~/.pi/agent/AGENTS.md"
+".pi/agent/keybindings.json" = "~/.pi/agent/keybindings.json"
+".pi/agent/settings.json" = "~/.pi/agent/settings.json"
+".pi/agent/extensions" = { target = "~/.pi/agent/extensions", type = "symbolic" }
+".pi/agent/agents" = { target = "~/.pi/agent/agents", type = "symbolic" }
+".pi/agent/prompts" = { target = "~/.pi/agent/prompts", type = "symbolic" }
+
 # Worktrunk
 ".config/worktrunk/config.toml" = { target = "~/.config/worktrunk/config.toml", type = "symbolic" }
 

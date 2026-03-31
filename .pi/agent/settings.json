@@ -1,0 +1,11 @@
+{
+  "lastChangelogVersion": "0.64.0",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-4-6",
+  "packages": [
+    "npm:pi-sandbox",
+    "git:github.com/badlogic/pi-mono"
+  ],
+  "hideThinkingBlock": true,
+  "theme": "light"
+}
