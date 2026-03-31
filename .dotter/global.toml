@@ -27,6 +27,9 @@ depends = []
 # Claude Code
 ".claude/settings.json" = "~/.claude/settings.json"
 
+# Shared agent skills (symlinked from ~/.claude/skills and ~/.pi/agent/skills)
+".skills" = { target = "~/.skills", type = "symbolic" }
+
 # Worktrunk
 ".config/worktrunk/config.toml" = { target = "~/.config/worktrunk/config.toml", type = "symbolic" }
 
