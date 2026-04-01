@@ -33,8 +33,9 @@ alias icp it2copy
 alias ls eza
 alias l 'eza --icons'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
+alias web "ddgr --noua"
 function cdr
-    if git rev-parse --show-toplevel > /dev/null 2>&1
+    if git rev-parse --show-toplevel >/dev/null 2>&1
         cd (git rev-parse --show-toplevel)
     else
         echo "Not a git repository"
