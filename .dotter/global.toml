@@ -32,6 +32,8 @@ depends = []
 
 # Pi coding agent
 ".config/fish/pi.fish" = "~/.config/fish/pi.fish"
+".config/fish/functions/pi-find.fish" = "~/.config/fish/functions/pi-find.fish"
+".config/fish/functions/pi-find-name.fish" = "~/.config/fish/functions/pi-find-name.fish"
 ".pi/agent/AGENTS.md" = "~/.pi/agent/AGENTS.md"
 ".pi/agent/keybindings.json" = "~/.pi/agent/keybindings.json"
 ".pi/agent/settings.json" = "~/.pi/agent/settings.json"
