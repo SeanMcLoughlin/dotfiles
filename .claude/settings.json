@@ -136,7 +136,8 @@
       "Bash(glab user status:*)",
       "Bash(glab variable list:*)",
       "Bash(glab version:*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "model": "opus[1m]",
   "statusLine": {
@@ -175,5 +176,6 @@
       ]
     }
   },
-  "showClearContextOnPlanAccept": true
+  "showClearContextOnPlanAccept": true,
+  "skipAutoPermissionPrompt": true
 }
