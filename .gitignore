@@ -7,7 +7,9 @@
 
 # Fisher plugin files (managed by fisher, only track fish_plugins)
 .config/fish/completions/
-.config/fish/functions/
+.config/fish/functions/*
+!.config/fish/functions/pi-find.fish
+!.config/fish/functions/pi-find-name.fish
 .config/fish/conf.d/
 
 .dotter/local.toml
