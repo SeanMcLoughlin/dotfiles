@@ -1,15 +1,15 @@
 skip-commit-generation-prompt = true
 [post-start]
-agent-md = """find "{{ primary_worktree_path }}" \( -name CLAUDE.md -o -name AGENTS.md \) -not -path '*/node_modules/*' -not -path '*/.git/*' | while read f; do
+agent-md = '''find "{{ primary_worktree_path }}" \( -name CLAUDE.md -o -name AGENTS.md \) -not -path '*/node_modules/*' -not -path '*/.git/*' | while read f; do
   rel="${f#{{ primary_worktree_path }}/}"
   if git -C "{{ primary_worktree_path }}" check-ignore -q "$rel"; then
     mkdir -p "$(dirname "$rel")"
     cp "$f" "$rel"
   fi
-done"""
-direnv-allow = """if [ -f "{{ worktree_path }}/.envrc" ]; then
+done'''
+direnv-allow = '''if [ -f "{{ worktree_path }}/.envrc" ]; then
   direnv allow "{{ worktree_path }}"
-fi"""
+fi'''
 
 [merge]
 no-commit = true
