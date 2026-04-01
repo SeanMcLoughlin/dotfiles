@@ -71,7 +71,7 @@ alias ,,,,, 'cd ../../../../..'
 ############### 
 set -x HOMEBREW_NO_ENV_HINTS 1
 
-source ~/.config/fish/private_config.fish
+test -f ~/.config/fish/private_config.fish && source ~/.config/fish/private_config.fish
 
 # direnv
 if command -q direnv
