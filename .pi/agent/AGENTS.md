@@ -1,5 +1,6 @@
 - You can search the web with `ddgr --noua`.
   - You can do one search every second or else you'll be rate limited.
+- If asked to read data from GitLab, use the `glab` tool. Do not use curl/wget as that data is behind a firewall.
 - You have a `subagent` tool available. Use it proactively when tasks would benefit from isolated context or parallel work:
   - Use `scout` (Haiku, fast) for codebase recon before complex changes
   - Use `planner` to create implementation plans from scout findings
