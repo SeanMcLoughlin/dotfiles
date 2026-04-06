@@ -1,8 +1,11 @@
-theme = "catppuccin_frappe"
+[theme]
+dark = "catppuccin_frappe"
+light = "catppuccin_latte"
 
 [editor]
 true-color = true
 bufferline = "multiple"
+insecure = true
 
 [editor.soft-wrap]
 enable = true
