@@ -106,3 +106,8 @@ source $ZSH/oh-my-zsh.sh
 source ~/.zshrc_spm
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/smcloughlin/.lmstudio/bin"
+# End of LM Studio CLI section
+
