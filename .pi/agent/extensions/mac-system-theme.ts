@@ -1,47 +1,60 @@
 /**
- * Syncs pi theme with macOS system appearance (dark/light mode).
+ * Adds a /theme command to toggle between dark and light themes.
  *
  * Usage:
- *   pi -e examples/extensions/mac-system-theme.ts
+ *   /theme        - toggle between dark and light
+ *   /theme dark   - switch to dark
+ *   /theme light  - switch to light
  */
 
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
-const execAsync = promisify(exec);
-
-async function isDarkMode(): Promise<boolean> {
-	try {
-		const { stdout } = await execAsync(
-			"osascript -e 'tell application \"System Events\" to tell appearance preferences to return dark mode'",
-		);
-		return stdout.trim() === "true";
-	} catch {
-		return false;
-	}
-}
-
 export default function (pi: ExtensionAPI) {
-	let intervalId: ReturnType<typeof setInterval> | null = null;
-
-	pi.on("session_start", async (_event, ctx) => {
-		let currentTheme = (await isDarkMode()) ? "dark" : "light";
-		ctx.ui.setTheme(currentTheme);
-
-		intervalId = setInterval(async () => {
-			const newTheme = (await isDarkMode()) ? "dark" : "light";
-			if (newTheme !== currentTheme) {
-				currentTheme = newTheme;
-				ctx.ui.setTheme(currentTheme);
+	pi.registerCommand("theme", {
+		description: "Toggle or set theme (dark/light)",
+		getArgumentCompletions: (prefix: string) => {
+			const options = ["dark", "light"];
+			const filtered = options
+				.filter((o) => o.startsWith(prefix))
+				.map((o) => ({ value: o, label: o }));
+			return filtered.length > 0 ? filtered : null;
+		},
+		handler: async (args, ctx) => {
+			const arg = args?.trim().toLowerCase();
+			if (arg === "dark" || arg === "light") {
+				ctx.ui.setTheme(arg);
+				ctx.ui.notify(`Theme: ${arg}`, "info");
+			} else if (!arg) {
+				// Toggle: detect current macOS mode, flip it
+				let isDark = false;
+				try {
+					const { execFileSync } = await import("node:child_process");
+					execFileSync("defaults", ["read", "-g", "AppleInterfaceStyle"], {
+						stdio: "pipe",
+					});
+					isDark = true;
+				} catch {
+					isDark = false;
+				}
+				const next = isDark ? "light" : "dark";
+				ctx.ui.setTheme(next);
+				ctx.ui.notify(`Theme: ${next}`, "info");
+			} else {
+				ctx.ui.notify(`Unknown theme: ${arg}. Use "dark" or "light".`, "error");
 			}
-		}, 2000);
+		},
 	});
 
-	pi.on("session_shutdown", () => {
-		if (intervalId) {
-			clearInterval(intervalId);
-			intervalId = null;
+	// Still set the initial theme on startup based on macOS appearance
+	pi.on("session_start", (_event, ctx) => {
+		try {
+			const { execFileSync } = require("node:child_process");
+			execFileSync("defaults", ["read", "-g", "AppleInterfaceStyle"], {
+				stdio: "pipe",
+			});
+			ctx.ui.setTheme("dark");
+		} catch {
+			ctx.ui.setTheme("light");
 		}
 	});
 }
