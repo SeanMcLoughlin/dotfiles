@@ -11,8 +11,9 @@ const DANGEROUS_GIT_PATTERNS = [
 
 // Patterns for commands that require approval due to system-wide state modification
 const PACKAGE_MANAGER_PATTERNS = [
-  // Any brew command
-  /\bbrew\b/,
+  // brew commands that modify system state (install, uninstall, upgrade, tap, untap, link, unlink, etc.)
+  // Read-only commands like info, list, search, config, doctor, deps, desc, cat, home, log are allowed
+  /\bbrew\s+(install|reinstall|uninstall|remove|rm|upgrade|tap|untap|link|ln|unlink|pin|unpin|cleanup|autoremove|migrate|postinstall|services|cask)\b/,
   // npm global install/uninstall: -g, --global, or --location=global
   /\bnpm\s+(install|i|add)\b(?=[\s\S]*\s(-g|--global|--location=global))/,
   /\bnpm\s+(uninstall|remove|rm|un|r)\b(?=[\s\S]*\s(-g|--global|--location=global))/,
