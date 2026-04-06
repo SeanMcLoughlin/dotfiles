@@ -66,6 +66,11 @@ alias ,,, 'cd ../../..'
 alias ,,,, 'cd ../../../..'
 alias ,,,,, 'cd ../../../../..'
 
+######################
+# GitLab CI (local)  #
+######################
+alias ci "gitlab-ci-local --force-shell-executor --evaluate-rule-changes=false"
+
 ###############
 # LLM Aliases #
 ############### 
