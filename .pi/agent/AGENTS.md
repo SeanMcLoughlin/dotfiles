@@ -1,3 +1,4 @@
+- Do not do `git push` unless the user specifically says you can for that turn of the conversation.
 - You can search the web with `ddgr --noua`.
   - You can do one search every second or else you'll be rate limited.
 - If asked to read data from GitLab, use the `glab` tool. Do not use curl/wget as that data is behind a firewall.
