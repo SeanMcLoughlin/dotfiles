@@ -18,4 +18,12 @@ return require('packer').startup(function(use)
       require('claude-code').setup()
     end
   }
+
+  -- LSP
+  use {
+    'neovim/nvim-lspconfig',
+    config = function()
+      require('lsp')
+    end
+  }
 end)
