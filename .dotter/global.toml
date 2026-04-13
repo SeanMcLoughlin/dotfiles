@@ -21,7 +21,8 @@ depends = []
 
 # Config directories (deploy entire directories recursively)
 ".config/fish" = { target = "~/.config/fish", type = "symbolic" }
-".config/helix" = { target = "~/.config/helix", type = "symbolic" }
+".config/helix/config.toml" = "~/.config/helix/config.toml"
+".config/helix/languages.toml" = "~/.config/helix/languages.toml"
 ".config/nvim" = { target = "~/.config/nvim", type = "symbolic" }
 
 # Claude Code
@@ -37,9 +38,27 @@ depends = []
 ".pi/agent/AGENTS.md" = "~/.pi/agent/AGENTS.md"
 ".pi/agent/keybindings.json" = "~/.pi/agent/keybindings.json"
 ".pi/agent/settings.json" = "~/.pi/agent/settings.json"
-".pi/agent/extensions" = { target = "~/.pi/agent/extensions", type = "symbolic" }
-".pi/agent/agents" = { target = "~/.pi/agent/agents", type = "symbolic" }
-".pi/agent/prompts" = { target = "~/.pi/agent/prompts", type = "symbolic" }
+# Pi agents (individual files, not directory symlinks — prevents dotter --force from deleting contents)
+".pi/agent/agents/planner.md" = { target = "~/.pi/agent/agents/planner.md", type = "symbolic" }
+".pi/agent/agents/reviewer.md" = { target = "~/.pi/agent/agents/reviewer.md", type = "symbolic" }
+".pi/agent/agents/scout.md" = { target = "~/.pi/agent/agents/scout.md", type = "symbolic" }
+".pi/agent/agents/worker.md" = { target = "~/.pi/agent/agents/worker.md", type = "symbolic" }
+
+# Pi extensions (individual file symlinks)
+".pi/agent/extensions/btw/index.ts" = { target = "~/.pi/agent/extensions/btw/index.ts", type = "symbolic" }
+".pi/agent/extensions/btw/lib/mode-utils.ts" = { target = "~/.pi/agent/extensions/btw/lib/mode-utils.ts", type = "symbolic" }
+".pi/agent/extensions/btw/lib/subagent-core.ts" = { target = "~/.pi/agent/extensions/btw/lib/subagent-core.ts", type = "symbolic" }
+".pi/agent/extensions/mac-system-theme.ts" = { target = "~/.pi/agent/extensions/mac-system-theme.ts", type = "symbolic" }
+".pi/agent/extensions/read-only-mode.ts" = { target = "~/.pi/agent/extensions/read-only-mode.ts", type = "symbolic" }
+".pi/agent/extensions/subagent/agents.ts" = { target = "~/.pi/agent/extensions/subagent/agents.ts", type = "symbolic" }
+".pi/agent/extensions/subagent/index.ts" = { target = "~/.pi/agent/extensions/subagent/index.ts", type = "symbolic" }
+".pi/agent/extensions/system-guard.ts" = { target = "~/.pi/agent/extensions/system-guard.ts", type = "symbolic" }
+".pi/agent/extensions/todo.ts" = { target = "~/.pi/agent/extensions/todo.ts", type = "symbolic" }
+
+# Pi prompt templates (individual file symlinks)
+".pi/agent/prompts/implement-and-review.md" = { target = "~/.pi/agent/prompts/implement-and-review.md", type = "symbolic" }
+".pi/agent/prompts/implement.md" = { target = "~/.pi/agent/prompts/implement.md", type = "symbolic" }
+".pi/agent/prompts/scout-and-plan.md" = { target = "~/.pi/agent/prompts/scout-and-plan.md", type = "symbolic" }
 
 # Worktrunk
 ".config/worktrunk/config.toml" = { target = "~/.config/worktrunk/config.toml", type = "symbolic" }
