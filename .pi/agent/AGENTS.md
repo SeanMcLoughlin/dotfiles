@@ -11,3 +11,4 @@
   - Use parallel mode when multiple independent investigations are needed
   - Use chain mode for scout → planner → worker workflows
   - Don't use subagents for simple tasks you can handle directly
+- The RISC-V ISA manual (privileged + unprivileged spec AsciiDoc source) is available at `~/riscv-isa-manual`. The privileged spec sections are under `src/priv/` (e.g., `machine.adoc`, `supervisor.adoc`). Use this to verify spec references instead of guessing from training data.
