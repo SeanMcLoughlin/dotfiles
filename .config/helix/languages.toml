@@ -1,0 +1,15 @@
+{{#if dvt_license_file}}
+# DVT Language Server (AMIQ EDA) - SystemVerilog/Verilog/VHDL/e
+[language-server.dvt-ls]
+command = "dvt-lsp-bridge"
+args = [".", "-lang", "vlog"]
+environment = { "DVT_LICENSE_FILE" = "{{dvt_license_file}}" }
+
+[[language]]
+name = "verilog"
+language-servers = ["dvt-ls"]
+
+[[language]]
+name = "systemverilog"
+language-servers = ["dvt-ls"]
+{{/if}}
