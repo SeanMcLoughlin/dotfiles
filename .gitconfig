@@ -23,6 +23,7 @@
     p = pull
     a = add
     s = status
+	d = diff
     st = status
     l = log
     wt = worktree
