@@ -48,6 +48,9 @@ depends = []
 ".config/zed/settings.json" = "~/.config/zed/settings.json"
 ".config/zed/tasks.json" = "~/.config/zed/tasks.json"
 
+# Hammerspoon
+".hammerspoon" = { target = "~/.hammerspoon", type = "symbolic" }
+
 [default.variables]
 
 [settings]
