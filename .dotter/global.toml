@@ -63,6 +63,9 @@ depends = []
 # Worktrunk
 ".config/worktrunk/config.toml" = { target = "~/.config/worktrunk/config.toml", type = "symbolic" }
 
+# Zellij
+".config/zellij/config.kdl" = "~/.config/zellij/config.kdl"
+
 # Zed editor (individual files only, not AI features)
 ".config/zed/settings.json" = "~/.config/zed/settings.json"
 ".config/zed/tasks.json" = "~/.config/zed/tasks.json"
