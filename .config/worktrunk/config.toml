@@ -1,4 +1,7 @@
 skip-commit-generation-prompt = true
+[pre-start]
+submodules = "git submodule update --init --recursive"
+
 [post-start]
 agent-md = '''find "{{ primary_worktree_path }}" \( -name CLAUDE.md -o -name AGENTS.md \) -not -path '*/node_modules/*' -not -path '*/.git/*' | while read f; do
   rel="${f#{{ primary_worktree_path }}/}"
