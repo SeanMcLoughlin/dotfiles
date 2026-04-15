@@ -32,6 +32,7 @@ alias v vim
 alias icp it2copy
 alias ls eza
 alias l 'eza --icons'
+alias tree 'eza --tree --git-ignore'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
 alias web "ddgr --noua"
 function cdr
