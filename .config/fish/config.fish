@@ -70,7 +70,24 @@ alias ,,,,, 'cd ../../../../..'
 ######################
 # GitLab CI (local)  #
 ######################
+
+# Run CI, ignoring rules:changes to always run the specified jobs, and forcing a shell executor to not use Docker.
+# You should almost always use this alias instead of the main command.
 alias ci "gitlab-ci-local --force-shell-executor --evaluate-rule-changes=false"
+
+# Run CI with the ability to glob all jobs after a colon of the job name. If you have jobs like:
+# my_dir:job1, my_dir:job2, my_dir:job3
+# and they all share the same stage as other jobs like:
+# other_dir:jobX, other:dir:jobY
+# Then you can run:
+# cig my_dir
+# and it will run all jobs under my_dir.
+# This is a workaround for gitlab-ci-local not supporting regexes or globs in job names, requiring you to only
+# filter on either exact stage names, or exact job names.
+# https://github.com/firecow/gitlab-ci-local/issues/1664
+function cig
+    ci --force-shell-executor (ci --list 2>&1 | awk "/^$argv[1]:/{printf \"--job %s \", \$1}" | string split ' ' | string match -v '')
+end
 
 ###############
 # LLM Aliases #
