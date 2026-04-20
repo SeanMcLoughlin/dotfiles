@@ -177,5 +177,6 @@
     }
   },
   "showClearContextOnPlanAccept": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "effortLevel": "medium"
 }
