@@ -5,10 +5,10 @@
     defaultBranch = main
 [pull]
     rebase = true
+[push]
+	autoSetupRemote = true
 [diff]
     external = difft
-    # Set difftastic as the default difftool, so we don't need to specify
-    # `-t difftastic` every time.
     tool = difftastic
 [difftool]
     # Run the difftool immediately, don't ask 'are you sure' each time.
@@ -17,6 +17,8 @@
     # Use a pager if the difftool output is larger than one screenful,
     # consistent with the behaviour of `git diff`.
     difftool = true
+[credential]
+	helper = osxkeychain
 [alias]
     # Various uninteresting shortcuts
     c = commit
@@ -57,7 +59,7 @@
     subu = "!f() { git submodule sync --recursive && git submodule update --init --recursive; }; f"
 
     # Push, create MR, run CI, auto-merge with squash into main
-    shipit = push -o merge_request.create -o merge_request.target=main -o merge_request.merge_when_pipeline_succeeds -o merge_request.squash -o merge_request.remove_source_branch
+	shipit = push -o merge_request.create -o merge_request.target=main -o merge_request.merge_when_pipeline_succeeds -o merge_request.remove_source_branch
 
     # Push, create draft MR, run CI, do NOT auto-merge
     draft = push -o merge_request.create -o merge_request.target=main -o merge_request.draft -o merge_request.remove_source_branch
@@ -80,8 +82,3 @@
 	is-project-accelerating-or-dying = !git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
 	firefight-frequency = !git log --oneline --since='1 year ago' | grep -iE 'revert|hotfix|emergency|rollback'
 	
-
-[push]
-	autoSetupRemote = true
-[credential]
-	helper = osxkeychain
