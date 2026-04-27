@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.66.1",
+  "lastChangelogVersion": "0.70.2",
   "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-6",
+  "defaultModel": "claude-sonnet-4-6",
   "packages": [
     "npm:pi-sandbox",
     "git:github.com/badlogic/pi-mono",
@@ -10,5 +10,7 @@
   ],
   "hideThinkingBlock": true,
   "theme": "ansi-light",
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "medium",
+  "enableInstallTelemetry": false,
+  "shellCommandPrefix": "source ~/.pi/agent/aliases.sh"
 }
