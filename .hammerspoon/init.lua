@@ -1,3 +1,4 @@
+hs.allowAppleScript(true)
 local spoonsFile = hs.configdir .. "/spoons.txt"
 
 local function readSpoonList(path)
