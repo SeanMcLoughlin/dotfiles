@@ -7,6 +7,9 @@ true-color = true
 bufferline = "multiple"
 insecure = true
 
+[keys.normal]
+"space" = { "C-g" = ":sh printf '%%s' %{file_path_absolute} | pbcopy" } # copy absolute path to clipboard
+
 [editor.soft-wrap]
 enable = true
 wrap-indicator = ""
