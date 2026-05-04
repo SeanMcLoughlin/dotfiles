@@ -9,6 +9,7 @@ insecure = true
 
 [keys.normal]
 "space" = { "C-g" = ":sh printf '%%s' %{file_path_absolute} | pbcopy" } # copy absolute path to clipboard
+"C-r" = ":reload-all"
 
 [editor.soft-wrap]
 enable = true
