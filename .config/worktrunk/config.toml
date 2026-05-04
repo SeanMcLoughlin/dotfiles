@@ -1,6 +1,31 @@
 skip-commit-generation-prompt = true
 [pre-start]
-submodules = "git submodule update --init --recursive"
+submodules = '''GIT_COMMON_DIR=$(git -C "{{ primary_worktree_path }}" rev-parse --absolute-git-dir)
+GITMODULES="{{ primary_worktree_path }}/.gitmodules"
+if [ ! -f "$GITMODULES" ]; then exit 0; fi
+git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print $2}' | while read -r sm_path; do
+  MODULES_DIR="$GIT_COMMON_DIR/modules/$sm_path"
+  TARGET="{{ worktree_path }}/$sm_path"
+  if [ -d "$MODULES_DIR" ]; then
+    COMMIT=$(git -C "{{ worktree_path }}" ls-files --stage -- "$sm_path" | awk '{print $2}')
+    git -C "$MODULES_DIR" worktree add --detach "$TARGET" "$COMMIT" || \
+      git -C "{{ worktree_path }}" submodule update --init -- "$sm_path"
+  else
+    git -C "{{ worktree_path }}" submodule update --init -- "$sm_path"
+  fi
+done'''
+
+[pre-remove]
+submodules = '''GIT_COMMON_DIR=$(git -C "{{ primary_worktree_path }}" rev-parse --absolute-git-dir)
+GITMODULES="{{ primary_worktree_path }}/.gitmodules"
+if [ ! -f "$GITMODULES" ]; then exit 0; fi
+git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print $2}' | while read -r sm_path; do
+  MODULES_DIR="$GIT_COMMON_DIR/modules/$sm_path"
+  if [ -d "$MODULES_DIR" ]; then
+    git -C "$MODULES_DIR" worktree remove --force "{{ worktree_path }}/$sm_path" 2>/dev/null || true
+    git -C "$MODULES_DIR" worktree prune
+  fi
+done'''
 
 [post-start]
 agent-md = '''find "{{ primary_worktree_path }}" \( -name CLAUDE.md -o -name AGENTS.md \) -not -path '*/node_modules/*' -not -path '*/.git/*' | while read f; do
@@ -18,3 +43,8 @@ fi'''
 no-commit = true
 
 [projects]
+
+[projects."aus-gitlab.local.tenstorrent.com/arch/callandor"]
+# Touch .brewfile.cache so new worktrees start warm — skips the slow
+# `brew bundle check` Ruby startup on first direnv load.
+post-start.brew-cache = "touch {{ worktree_path }}/.brewfile.cache"
