@@ -13,7 +13,7 @@
   - Use chain mode for scout → planner → worker workflows
   - Don't use subagents for simple tasks you can handle directly
 - `glab` for GitLab access. _Always_ use this if you're working with GitLab.
-- `gh` for GitHub access. _Always_ use this if you're working with GitHub.
+- `gh` for GitHub access. _Always_ use this if you're working with GitHub. If you're asked to search GitHub, use this tool.
 - `obsidian` for Obsidian CLI access. The user may ask you to search their notes.
 - `readwise` for Readwise Reader doc access. The user may ask you to search for an article they read in the past.
 - `glean` (via MCP): Search company knowledge (docs, Slack, Jira, GitHub, etc.), chat with Glean AI, or read specific documents. Use this for internal/company questions. **If you're ever asked to search Slack, use this tool!**
@@ -28,6 +28,8 @@
 
 # Rules you must follow
 
+- Prefer to use `rg` instead of `grep`. If you're reaching for `grep`, try using `rg` first. If not available, default back to `grep`.
+- Prefer to use `fd` instead of `find`. If you're reaching for `find`, try using `fd` first. If not available, default back to `find`.
 - Do not do `git push` unless the user specifically says you can for that turn of the conversation.
 - When writing markdown files...
   - Do not use hard line wraps. Use soft line wraps.
