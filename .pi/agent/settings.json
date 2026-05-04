@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.70.2",
+  "lastChangelogVersion": "0.72.1",
   "defaultProvider": "anthropic",
   "defaultModel": "claude-sonnet-4-6",
   "packages": [
@@ -12,5 +12,14 @@
   "theme": "ansi-light",
   "defaultThinkingLevel": "medium",
   "enableInstallTelemetry": false,
-  "shellCommandPrefix": "source ~/.pi/agent/aliases.sh"
+  "shellCommandPrefix": "source ~/.pi/agent/aliases.sh",
+  "retry": {
+    "enabled": true,
+    "maxRetries": 20,
+    "baseDelayMs": 2000,
+    "provider": {
+      "maxRetries": 10,
+      "maxRetryDelayMs": 600000
+    }
+  }
 }
