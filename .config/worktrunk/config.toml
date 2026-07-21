@@ -7,9 +7,22 @@ git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print
   MODULES_DIR="$GIT_COMMON_DIR/modules/$sm_path"
   TARGET="{{ worktree_path }}/$sm_path"
   if [ -d "$MODULES_DIR" ]; then
+    # Store each linked worktree's working-tree path per-worktree (in
+    # worktrees/<name>/config.worktree) instead of the shared config. Without
+    # this, `git worktree add` clobbers the shared core.worktree (the main
+    # checkout's pointer) with a wrong-depth path, fataling every worktree's
+    # `git worktree list/status/prune`.
+    git -C "$MODULES_DIR" config extensions.worktreeConfig true
     COMMIT=$(git -C "{{ worktree_path }}" ls-files --stage -- "$sm_path" | awk '{print $2}')
-    git -C "$MODULES_DIR" worktree add --detach "$TARGET" "$COMMIT" || \
+    if git -C "$MODULES_DIR" worktree add --detach "$TARGET" "$COMMIT"; then
+      # `git worktree add` does not reliably write a per-worktree core.worktree
+      # even with worktreeConfig on; when it's absent git falls back to the
+      # wrong-depth shared value and every file shows as deleted/untracked
+      # ("modified content, untracked content"). Pin it explicitly.
+      git -C "$TARGET" config --worktree core.worktree "$TARGET"
+    else
       git -C "{{ worktree_path }}" submodule update --init -- "$sm_path"
+    fi
   else
     git -C "{{ worktree_path }}" submodule update --init -- "$sm_path"
   fi
