@@ -1,12 +1,13 @@
 {
-  "lastChangelogVersion": "0.72.1",
+  "lastChangelogVersion": "0.80.3",
   "defaultProvider": "anthropic",
   "defaultModel": "claude-sonnet-4-6",
   "packages": [
     "npm:pi-sandbox",
     "git:github.com/badlogic/pi-mono",
     "npm:pi-mcp-adapter",
-    "git:github.com/leblancfg/pi-ansi-themes"
+    "git:github.com/leblancfg/pi-ansi-themes",
+    "extensions/lsp.ts"
   ],
   "hideThinkingBlock": true,
   "theme": "ansi-light",
