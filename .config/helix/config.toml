@@ -5,12 +5,15 @@ light = "catppuccin_latte"
 [editor]
 true-color = true
 bufferline = "multiple"
-insecure = true
 
 [keys.normal]
 "space" = { "C-g" = ":sh printf '%%s' %{file_path_absolute} | pbcopy" } # copy absolute path to clipboard
 "C-r" = ":reload-all"
 
+
 [editor.soft-wrap]
 enable = true
 wrap-indicator = ""
+
+[editor.workspace-trust]
+level = "insecure"
