@@ -1,15 +1,16 @@
 ### Display
 theme = dark:"Catppuccin Frappe", light:"Catppuccin Latte"
 font-family = "iMWritingMono Nerd Font Mono"
-font-size = 14
+font-size = 13
 adjust-cell-width = "-10%"
 adjust-cell-height = "10%"
 copy-on-select = clipboard
 shell-integration-features = ssh-terminfo, ssh-env
 window-save-state = always
 macos-option-as-alt = true
+macos-icon = "holographic"
 
 # Swallow Hyper+R (Cmd+Ctrl+Alt+Shift+R) so it doesn't bleed into terminal apps (e.g. Vim or Helix insert mode)
 keybind = super+ctrl+alt+shift+r=ignore
 
-
+confirm-close-surface = false
