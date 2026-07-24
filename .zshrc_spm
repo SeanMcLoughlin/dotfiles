@@ -44,3 +44,6 @@ source ~/.private_aliases
 source ~/.tokens
 export HOMEBREW_NO_ENV_HINTS=1
 
+# pi/claude-code shared shell tools
+source ~/.pi/agent/aliases.sh
+
