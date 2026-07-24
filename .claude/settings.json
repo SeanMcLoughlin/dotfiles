@@ -137,9 +137,21 @@
       "Bash(glab variable list:*)",
       "Bash(glab version:*)"
     ],
-    "defaultMode": "auto"
+    "defaultMode": "bypassPermissions"
   },
   "model": "opus[1m]",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.skills/session-title-sync/restore-title.sh 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bunx -y ccstatusline@latest",
@@ -165,18 +177,29 @@
     "filesystem": {
       "allowWrite": [
         "~/repos",
-        "~/.dotfiles"
+        "~/.dotfiles",
+        "/tmp",
+        "/private/tmp",
+        "/var/folders"
       ],
       "allowRead": [
         "~/repos",
         "~/Documents/specs",
         "~/Documents/ai-context",
         "~/.dotfiles",
-        "~/.claude"
+        "~/.claude",
+        "/tmp",
+        "/private/tmp",
+        "/var/folders"
       ]
     }
   },
+  "effortLevel": "medium",
   "showClearContextOnPlanAccept": true,
-  "skipAutoPermissionPrompt": true,
-  "effortLevel": "medium"
+  "tui": "default",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "editorMode": "normal",
+  "verbose": false,
+  "skipAutoPermissionPrompt": true
 }
