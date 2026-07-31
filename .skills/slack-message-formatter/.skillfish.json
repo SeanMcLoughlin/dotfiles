@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "slack-message-formatter",
+  "owner": "davepoon",
+  "repo": "buildwithclaude",
+  "path": "plugins/all-skills/skills/slack-message-formatter",
+  "branch": "main",
+  "sha": "e18b41b69496efbc310ef405dfd7345feae684ca",
+  "source": "manual"
+}

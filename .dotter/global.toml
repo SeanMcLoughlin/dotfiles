@@ -28,8 +28,9 @@ depends = []
 # Claude Code
 ".claude/settings.json" = "~/.claude/settings.json"
 
-# Shared agent skills (symlinked from ~/.claude/skills and ~/.pi/agent/skills)
-".skills" = { target = "~/.skills", type = "symbolic" }
+# Shared agent skills are NOT managed by dotter: it recurses a directory into
+# per-file links, so a new skill file would silently stay outside the repo.
+# ~/.skills is a plain symlink to .skills instead -- see README.
 
 # Pi coding agent
 ".config/fish/pi.fish" = "~/.config/fish/pi.fish"
