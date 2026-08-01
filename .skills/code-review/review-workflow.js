@@ -5,6 +5,7 @@ export const meta = {
     { title: 'Find', detail: 'every persona reads every shard at once, read-only' },
     { title: 'Verify', detail: 'independent agents try to refute the costly findings' },
     { title: 'Apply', detail: 'one fixer per persona, in priority order, serial' },
+    { title: 'Cascade', detail: 'review the fixes this review itself made' },
   ],
 }
 
@@ -12,6 +13,12 @@ const branch = args.branch
 const workdir = args.workdir
 const shards = args.shards
 const enabled = args.personas
+/** HEAD before any fixer ran, so the cascade pass can diff the review's own work. */
+const baseSha = args.baseSha
+
+/** Personas that re-review what the fixers wrote. Refactors move logic, so they
+ * are the edits most worth a second look. */
+const CASCADE_KEYS = ['architect', 'bug-hunter']
 
 /**
  * Every persona, in the order their fixes must be applied. The order is
@@ -156,13 +163,21 @@ own find loop -- the finding work is already done and verified for you below.
 ${findings.length} verified finding(s) to act on:
 ${JSON.stringify(findings, null, 2)}
 
+**Treat every line number as a hint, not an address.** The findings were made
+against the commit this review started from. Personas that ran before you have
+since edited these files, and the architect and the doc nitpicker both change
+how many lines a file has. So a line number can now point at unrelated code.
+Locate each finding by its \`evidence\` text and its \`summary\`, and use the line
+number only to decide where to start looking. Never edit a line just because
+the number matches.
+
 Work through them in order. For each one:
-1. Read the code around it. The finding was made against this same commit, but
-   an earlier persona may have already changed that area in this same review.
-   If a finding no longer applies, put it in skipped and move on.
-2. Apply the fix if it is genuinely an improvement. Keep it minimal and
+1. Find the code the finding actually describes, by content. Then read around it.
+2. If the problem is already fixed, or the code it described is gone, put it in
+   skipped and move on. Do not force a fix onto whatever now sits at that line.
+3. Apply the fix if it is genuinely an improvement. Keep it minimal and
    contained; do not refactor adjacent code that is not in the changelist.
-3. If it needs a human decision, put it in flagged and do not guess.
+4. If it needs a human decision, put it in flagged and do not guess.
 
 You may fix a closely related problem you notice while editing, but do not
 start a fresh hunt of your own -- that is what made this review slow before.
@@ -170,6 +185,32 @@ ${extra}
 
 Commit your changes before you exit, with a message your persona would write.
 Set committed=true only if you actually made a commit.`
+}
+
+function cascadePrompt(persona) {
+  return `${preamble}
+
+A code review just ran on this branch and its fixers changed the code. Nobody
+has reviewed those changes. That is your job, and it is the only thing you are
+reviewing here.
+
+Read ~/.skills/${persona.key}/SKILL.md for its judgment criteria only. Ignore
+its process: no branch setup, no fix loop, no commit, no report format.
+
+You are a FINDER. Make no edits, run no git command that changes state, and do
+not commit.
+
+The review's own work is exactly this diff:
+  git diff ${baseSha}..HEAD
+  git log ${baseSha}..HEAD --oneline
+Read it, then read the current full contents of each file it touches.
+
+Judge only what those commits introduced. The original changelist was already
+reviewed, so a problem that predates ${baseSha} is not yours. Refactors that
+moved logic deserve the most attention, because moved logic is where behaviour
+quietly changes.
+
+This diff should be small. Report an empty findings array if it is sound.`
 }
 
 // ---------------------------------------------------------------- find
@@ -314,6 +355,90 @@ for (const p of active) {
   reports[p.key] = outcome || { escalation: 'the fixer agent died; nothing was applied', applied: [], skipped: [], committed: false }
 }
 
+// ---------------------------------------------------------------- cascade
+
+phase('Cascade')
+
+/**
+ * The serial review used to get this for free: each persona read the code the
+ * previous one had already changed. Parallel finding gives that up, because
+ * every finder ran before a single fix existed. One pass over the review's own
+ * commits buys most of it back, and the diff is small next to the changelist.
+ */
+const cascade = { ran: false, findings: [], refuted: [], reports: {} }
+const cascadePersonas = active.filter((p) => CASCADE_KEYS.includes(p.key) && p.fixes)
+const committedAnything = active.some((p) => p.fixes && reports[p.key] && reports[p.key].committed)
+
+if (!baseSha) {
+  log('no baseSha given, so the review cannot diff its own work; SKIPPING the cascade pass')
+} else if (!committedAnything) {
+  log('no fixer committed anything, so there is nothing to re-review; skipping the cascade pass')
+} else if (!cascadePersonas.length) {
+  log('no cascade persona is active; skipping the cascade pass')
+} else {
+  cascade.ran = true
+  log(`re-reviewing this review's own commits with ${cascadePersonas.map((p) => p.key).join(' and ')}`)
+
+  const cascadeFound = await parallel(
+    cascadePersonas.map((p) => () =>
+      agent(cascadePrompt(p), {
+        label: `cascade:${p.key}`,
+        phase: 'Cascade',
+        schema: FINDINGS_SCHEMA,
+      }).then((r) => ({ persona: p, result: r }))
+    )
+  )
+
+  const cascadeByPersona = {}
+  for (const p of cascadePersonas) cascadeByPersona[p.key] = []
+  for (const entry of cascadeFound) {
+    if (!entry || !entry.result) {
+      log(`WARNING: the cascade finder died; the review's own commits went unreviewed`)
+      continue
+    }
+    for (const f of entry.result.findings || []) cascadeByPersona[entry.persona.key].push(f)
+  }
+
+  const flat = []
+  for (const p of cascadePersonas) for (const f of cascadeByPersona[p.key]) flat.push({ persona: p, finding: f })
+
+  const cascadeVerdicts = await parallel(
+    flat.map((v) => () =>
+      agent(verifyPrompt(v.finding, v.persona), {
+        label: `cascade-verify:${v.finding.file.split('/').pop()}:${v.finding.line}`,
+        phase: 'Cascade',
+        schema: VERDICT_SCHEMA,
+      }).then((r) => ({ ...v, verdict: r }))
+    )
+  )
+
+  for (let i = 0; i < cascadeVerdicts.length; i++) {
+    const v = cascadeVerdicts[i]
+    const item = flat[i]
+    if (v && v.verdict && v.verdict.refuted) {
+      cascade.refuted.push({ persona: item.persona.title, finding: item.finding, reason: v.verdict.reason })
+      cascadeByPersona[item.persona.key] = cascadeByPersona[item.persona.key].filter((f) => f !== item.finding)
+    }
+  }
+
+  // One pass only. A fixer that reacts to its own re-review can oscillate.
+  for (const p of cascadePersonas) {
+    const findings = cascadeByPersona[p.key]
+    cascade.findings.push(...findings.map((f) => ({ persona: p.title, ...f })))
+    if (!findings.length) {
+      cascade.reports[p.key] = { clean: true }
+      continue
+    }
+    log(`cascade: applying ${findings.length} ${p.key} finding(s) to the review's own work`)
+    const outcome = await agent(applyPrompt(p, findings), {
+      label: `cascade-apply:${p.key}`,
+      phase: 'Cascade',
+      schema: APPLY_SCHEMA,
+    })
+    cascade.reports[p.key] = outcome || { escalation: 'the cascade fixer died; nothing was applied', applied: [], skipped: [], committed: false }
+  }
+}
+
 return {
   branch,
   shardCount: shards.length,
@@ -325,4 +450,5 @@ return {
   order: active.map((p) => p.key),
   titles: Object.fromEntries(active.map((p) => [p.key, p.title])),
   reports,
+  cascade,
 }

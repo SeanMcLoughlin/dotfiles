@@ -18,13 +18,15 @@ no files. So all personas hunt at the same time, on the same commit, read-only.
 Fixing is NOT safe in parallel, because the fixers share one worktree. So fixes
 are applied afterwards, one persona at a time, in the order that matters.
 
-This is a four phase run:
+This is a five phase run:
 
 1. **Find**: every persona, on every shard of the diff, at once. No edits.
 2. **Verify**: an independent agent tries to refute each costly finding.
 3. **Apply**: one fixer per persona, serial, in priority order. Each fixer gets a
    verified list, so it never repeats the search.
-4. **Report**: one combined report.
+4. **Cascade**: the architect and the bug hunter review the fixes this review
+   itself just made. Nothing else reviews them.
+5. **Report**: one combined report.
 
 The `Workflow` tool does the orchestration. This skill is your authorisation to
 call it.
@@ -36,11 +38,23 @@ each one re-read the whole diff up to five times. On a large diff that took
 hours.
 
 The trade is real and you should know it. The finders all see the same starting
-commit, so they cannot see each other's fixes. A finding can therefore go stale:
-the architect may move code that the naming critic has just renamed. Applying in
-priority order limits this, and each fixer is told to skip findings that no
-longer apply. The result is not identical to a fully serial review. It is close,
-and it is much faster.
+commit, so they cannot see each other's fixes. Two things follow.
+
+A finding can go stale. This is mostly harmless, because the fixers run one at a
+time and read the current code before they edit. Stale findings get skipped
+rather than misapplied. Line numbers are the exception: the architect and the
+doc nitpicker change how many lines a file has, so a later finding can point at
+unrelated code. Each fixer is therefore told to locate a finding by its evidence
+text and to treat the line number as a hint only.
+
+Nothing reviews the fixes. In the serial version each persona read code that the
+earlier ones had already changed, so the fixes themselves got reviewed. Parallel
+finding gives that up. The cascade phase buys it back: it re-reviews only the
+commits this review created, which is a small diff, and it runs only when a
+fixer actually committed something. So the cost appears only when the risk does.
+
+The result is not identical to a fully serial review. It is close, and it is
+much faster.
 
 ---
 
@@ -80,6 +94,13 @@ git status --porcelain
 ```
 
 If uncommitted changes exist, stop and tell the user to commit or stash them.
+
+Record the commit the review starts from. The last phase uses it to find the
+review's own work:
+
+```bash
+git rev-parse HEAD
+```
 
 ---
 
@@ -128,6 +149,7 @@ scriptPath: ~/.skills/code-review/review-workflow.js
 args: {
   "branch": "<branch>",
   "workdir": "<absolute path from Step 1>",
+  "baseSha": "<the SHA from Step 2>",
   "personas": ["naming-critic", "architect", "bug-hunter", "test-reviewer",
                "doc-nitpicker", "questioner", "perf-reviewer", "magic-numbers"],
   "shards": [["path/a.rs", "path/b.rs"], ["other/c.py"]]
@@ -204,13 +226,29 @@ review that threw everything away.
 
 ---
 
+## Review of the review
+
+From `cascade`. Say which of these happened:
+- It did not run, and why (`ran: false` means no fixer committed, or no starting
+  commit was passed).
+- It ran and found nothing. Say so plainly: the fixes were re-read and were
+  sound.
+- It ran and found problems. List them, and say what was applied.
+
+Never leave this section out. A reader who does not see it cannot tell whether
+the fixes were checked.
+
+---
+
 ## Summary
 
 One line per persona: "Clean", or the number of fixes applied and findings
 skipped.
 
 Flag these first, because a human must look at them:
-- Any persona that returned an `escalation`.
+- Any persona that returned an `escalation`, in the main reports or the cascade.
+- Any finding the cascade raised. A problem in the review's own work matters
+  more than one in the original changelist, because nobody expected it.
 - Any persona whose fixer reported `committed: false`.
 - `deadFinders` above zero. That many files went unreviewed.
 - `unverifiedCount` above zero. That many low-severity findings bypassed
