@@ -3,6 +3,28 @@ skip-commit-generation-prompt = true
 submodules = '''GIT_COMMON_DIR=$(git -C "{{ primary_worktree_path }}" rev-parse --absolute-git-dir)
 GITMODULES="{{ primary_worktree_path }}/.gitmodules"
 if [ ! -f "$GITMODULES" ]; then exit 0; fi
+
+# `git submodule update --init` inside a linked worktree, for a submodule the
+# primary has ALREADY initialised, reuses the shared module dir and rewrites its
+# core.worktree to an 8-`../` path into this worktree. That path resolves
+# nowhere even while the worktree exists, so the primary's `git status` and
+# every worktree's pre-remove hook immediately fail with "cannot chdir to
+# ../../../..". Hand the shared value back to the primary afterwards.
+#
+# Only the shared value is repaired. There is deliberately no per-worktree
+# override: a submodule initialised this way has the shared module dir as its
+# git dir, so `git config --worktree` would write to the shared config.worktree
+# and re-break the primary — the very thing this repairs. This worktree's own
+# copy of that submodule is left pointing at the primary; recreate the worktree
+# if you need it, which takes the `git worktree add` path above and is correct.
+#
+# The other fallback below needs none of this: when the primary has never
+# initialised the submodule, git puts the module under
+# `.git/worktrees/<name>/modules/...`, private to this worktree, sharing nothing.
+restore_shared_worktree() {
+  git -C "$1" config core.worktree "{{ primary_worktree_path }}/$2" 2>/dev/null || true
+}
+
 git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print $2}' | while read -r sm_path; do
   MODULES_DIR="$GIT_COMMON_DIR/modules/$sm_path"
   TARGET="{{ worktree_path }}/$sm_path"
@@ -22,6 +44,7 @@ git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print
       git -C "$TARGET" config --worktree core.worktree "$TARGET"
     else
       git -C "{{ worktree_path }}" submodule update --init -- "$sm_path"
+      restore_shared_worktree "$MODULES_DIR" "$sm_path" "$TARGET"
     fi
   else
     git -C "{{ worktree_path }}" submodule update --init -- "$sm_path"
