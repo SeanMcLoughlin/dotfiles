@@ -22,7 +22,10 @@ if [ ! -f "$GITMODULES" ]; then exit 0; fi
 # initialised the submodule, git puts the module under
 # `.git/worktrees/<name>/modules/...`, private to this worktree, sharing nothing.
 restore_shared_worktree() {
-  git -C "$1" config core.worktree "{{ primary_worktree_path }}/$2" 2>/dev/null || true
+  # --file is load-bearing: with extensions.worktreeConfig on, core.worktree is
+  # a per-worktree key, so a plain `git -C "$1" config` writes it to
+  # worktrees/<id>/config.worktree and leaves the broken shared value in place.
+  git config --file "$1/config" core.worktree "{{ primary_worktree_path }}/$2" 2>/dev/null || true
 }
 
 git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print $2}' | while read -r sm_path; do
@@ -35,6 +38,9 @@ git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print
     # checkout's pointer) with a wrong-depth path, fataling every worktree's
     # `git worktree list/status/prune`.
     git -C "$MODULES_DIR" config extensions.worktreeConfig true
+    # Heal a clobber left by an earlier `git submodule update` in some other
+    # worktree before relying on this module dir (see [pre-remove]).
+    restore_shared_worktree "$MODULES_DIR" "$sm_path"
     COMMIT=$(git -C "{{ worktree_path }}" ls-files --stage -- "$sm_path" | awk '{print $2}')
     if git -C "$MODULES_DIR" worktree add --detach "$TARGET" "$COMMIT"; then
       # `git worktree add` does not reliably write a per-worktree core.worktree
@@ -58,6 +64,15 @@ if [ ! -f "$GITMODULES" ]; then exit 0; fi
 git config --file "$GITMODULES" --get-regexp 'submodule\..*\.path' | awk '{print $2}' | while read -r sm_path; do
   MODULES_DIR="$GIT_COMMON_DIR/modules/$sm_path"
   if [ -d "$MODULES_DIR" ]; then
+    # `git submodule update` run from inside ANY linked worktree rewrites this
+    # shared value to an 8-`../` path (it computes it relative to
+    # worktrees/<id>/ but stores it here, two levels up). extensions
+    # .worktreeConfig does not stop it. The prune below then fatals on the
+    # dead path and aborts this hook for every submodule, so re-pin first.
+    # --file is load-bearing: with extensions.worktreeConfig on, core.worktree
+    # is a per-worktree key, so a plain `git -C ... config` writes it to
+    # worktrees/<id>/config.worktree and leaves the broken shared value alone.
+    git config --file "$MODULES_DIR/config" core.worktree "{{ primary_worktree_path }}/$sm_path" 2>/dev/null || true
     git -C "$MODULES_DIR" worktree remove --force "{{ worktree_path }}/$sm_path" 2>/dev/null || true
     git -C "$MODULES_DIR" worktree prune
   fi
