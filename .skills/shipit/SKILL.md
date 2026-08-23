@@ -6,7 +6,6 @@ allowed-tools:
 - "Bash(wt:*)"
 - "Bash(glab:*)"
 - "Bash(sleep:*)"
-- "Bash(open:*)"
 - "Bash(vm:*)"
 ---
 
@@ -108,10 +107,10 @@ Prefer batching: draft the whole body before the first push, and if the user ask
 
 **Why push options at all, rather than the API.** The `agent` token holds `read_api`, `read_user`, `read_repository`, `write_repository`, `read_registry` — git push but no API writes. `PUT /merge_requests/<iid>` returns HTTP 403 `insufficient_scope`. Do not try it, and do not propose widening the token as a fix for a wording change: GitLab's PAT scopes are coarse, there is no merge-request-description scope, and `api` grants full read/write across every project the account can reach. Push options are scoped to the branch's own MR, which is the point. On the failure-fix path you're already amending and force-pushing, so append the title/description options there and correct the body in the same push.
 
-After pushing, open the MR URL in the browser. Get it from the push output or from the API query in step 4, then:
+After pushing, show the merge request. Run it from the worktree with no argument, so `glab` resolves the current branch:
 
 ```bash
-open <MR_URL>
+glab mr view
 ```
 
 If the branch already has an upstream, just push normally — the existing MR will pick it up:
