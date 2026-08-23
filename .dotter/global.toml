@@ -67,6 +67,11 @@ depends = []
 # Ghostty
 ".config/ghostty/config" = "~/.config/ghostty/config"
 
+# Alacritty
+".config/alacritty/alacritty.toml" = "~/.config/alacritty/alacritty.toml"
+".config/alacritty/themes/catppuccin-frappe.toml" = "~/.config/alacritty/themes/catppuccin-frappe.toml"
+".config/alacritty/themes/catppuccin-latte.toml" = "~/.config/alacritty/themes/catppuccin-latte.toml"
+
 # Zellij
 ".config/zellij/config.kdl" = "~/.config/zellij/config.kdl"
 
