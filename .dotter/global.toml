@@ -64,6 +64,11 @@ depends = []
 # Worktrunk
 ".config/worktrunk/config.toml" = { target = "~/.config/worktrunk/config.toml", type = "symbolic" }
 
+# glab (GitLab CLI). Only the shell variable is managed here: glab rewrites its own
+# config.yml on every run, and stores the API token there when no keyring is available.
+# Run scripts/glab-config.sh to set the matching glamour_style key.
+".config/fish/conf.d/glab.fish" = "~/.config/fish/conf.d/glab.fish"
+
 # Ghostty
 ".config/ghostty/config" = "~/.config/ghostty/config"
 
