@@ -1,0 +1,27 @@
+### Display
+# Alacritty cannot follow the macOS appearance, so pick one theme.
+# Light: swap to themes/catppuccin-latte.toml
+[general]
+import = ["~/.config/alacritty/themes/catppuccin-frappe.toml"]
+
+[font]
+size = 13
+
+# Approximates ghostty adjust-cell-width = -10%, adjust-cell-height = 10%
+offset = { x = -1, y = 2 }
+
+[font.normal]
+family = "iMWritingMono Nerd Font Mono"
+style = "Regular"
+
+[window]
+option_as_alt = "Both"
+
+[selection]
+save_to_clipboard = true
+
+# Swallow Hyper+R (Cmd+Ctrl+Alt+Shift+R) so it doesn't bleed into terminal apps (e.g. Vim or Helix insert mode)
+[[keyboard.bindings]]
+key = "R"
+mods = "Command|Control|Alt|Shift"
+action = "None"
