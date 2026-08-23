@@ -10,7 +10,8 @@
 .config/fish/functions/*
 !.config/fish/functions/pi-find.fish
 !.config/fish/functions/pi-find-name.fish
-.config/fish/conf.d/
+.config/fish/conf.d/*
+!.config/fish/conf.d/glab.fish
 
 .dotter/local.toml
 .dotter/cache.toml
