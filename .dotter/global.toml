@@ -27,6 +27,7 @@ depends = []
 
 # Claude Code
 ".claude/settings.json" = "~/.claude/settings.json"
+".claude/hooks/worktree-create.sh" = "~/.claude/hooks/worktree-create.sh"
 
 # Shared agent skills are NOT managed by dotter: it recurses a directory into
 # per-file links, so a new skill file would silently stay outside the repo.
