@@ -7,7 +7,6 @@ adjust-cell-height = "10%"
 copy-on-select = clipboard
 shell-integration-features = ssh-terminfo, ssh-env
 window-save-state = always
-command = /opt/homebrew/bin/tmux new-session -A -s main
 macos-option-as-alt = true
 macos-icon = "holographic"
 

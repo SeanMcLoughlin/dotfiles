@@ -52,6 +52,7 @@ end
 alias tmas 'tmux attach-session -t'
 alias tmasd 'tmux attach-session -d -t'
 alias tmls 'tmux ls'
+alias t 'tmux new-session -A -s main'
 
 ##############
 # Difftastic #
