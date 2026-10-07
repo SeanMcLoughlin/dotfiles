@@ -14,3 +14,5 @@ macos-icon = "holographic"
 keybind = super+ctrl+alt+shift+r=ignore
 
 confirm-close-surface = false
+
+keybind = super+t=new_window

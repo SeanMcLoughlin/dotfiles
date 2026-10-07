@@ -24,18 +24,10 @@ if spoon.SpoonInstall then
     Install:updateAllRepos()
 
     for _, spoonName in ipairs(readSpoonList(spoonsFile)) do
-        if spoonName ~= "SpoonInstall" and spoonName ~= "SpaceName" then
+        if spoonName ~= "SpoonInstall" then
             Install:andUse(spoonName)
         end
     end
-
-    Install:andUse("SpaceName")
 end
 
-local spaceName = spoon.SpaceName or hs.loadSpoon("SpaceName")
-if spaceName then
-    spaceName
-        :start()
-        :bindHotkeys({
-        })
-end
+aerospaceIndicator = require("aerospace")
