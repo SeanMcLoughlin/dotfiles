@@ -8,9 +8,9 @@ copy-on-select = clipboard
 shell-integration-features = ssh-terminfo, ssh-env
 window-save-state = always
 macos-option-as-alt = true
-macos-icon = "holographic"
+macos-icon = "chalkboard"
 
 # Swallow Hyper+R (Cmd+Ctrl+Alt+Shift+R) so it doesn't bleed into terminal apps (e.g. Vim or Helix insert mode)
 keybind = super+ctrl+alt+shift+r=ignore
 
-confirm-close-surface = false
+confirm-close-surface = true
