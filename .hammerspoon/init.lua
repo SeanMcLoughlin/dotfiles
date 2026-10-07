@@ -29,5 +29,3 @@ if spoon.SpoonInstall then
         end
     end
 end
-
-aerospaceIndicator = require("aerospace")

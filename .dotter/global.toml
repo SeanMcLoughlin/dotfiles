@@ -85,12 +85,8 @@ depends = []
 ".config/zed/settings.json" = "~/.config/zed/settings.json"
 ".config/zed/tasks.json" = "~/.config/zed/tasks.json"
 
-# AeroSpace
-".config/aerospace/aerospace.toml" = "~/.config/aerospace/aerospace.toml"
-
 # Hammerspoon
 ".hammerspoon/init.lua" = "~/.hammerspoon/init.lua"
-".hammerspoon/aerospace.lua" = "~/.hammerspoon/aerospace.lua"
 ".hammerspoon/spoons.txt" = "~/.hammerspoon/spoons.txt"
 
 [default.variables]
