@@ -1,5 +1,5 @@
 set -g fish_greeting # Disable help message at startup
-fish_config theme choose "catppuccin-mocha"
+fish_config theme choose catppuccin-mocha
 
 # Aliases for editing aliases and sourcing them
 alias cfg='$EDITOR ~/.config/fish/config.fish'
@@ -35,6 +35,21 @@ alias l 'eza --icons'
 alias tree 'eza --tree --git-ignore'
 alias espcfg "cd /Users/$USER/Library/Application\ Support/espanso"
 alias web "ddgr --noua"
+
+##########
+# GitLab #
+##########
+alias mr "glab mr view"
+alias pl "glab ci get -p"
+# ci-status lives in the callandor repo (tools/ci-status) and monitors itself,
+# so these no longer need viddy.
+function mrci --description 'Monitor the CI of a merge request, child pipelines included'
+    ci-status -m --mr $argv
+end
+function plci --description 'Monitor the CI of a pipeline, child pipelines included'
+    ci-status -m -p $argv
+end
+
 function cdr
     if git rev-parse --show-toplevel >/dev/null 2>&1
         cd (git rev-parse --show-toplevel)
@@ -45,6 +60,17 @@ end
 function mkcd
     mkdir -p $argv && cd $argv[-1]
 end
+
+##########
+# Claude #
+##########
+alias c claude
+alias cs "claude --model sonnet"
+alias cps "claude -p --model sonnet"
+alias co "claude --model opus"
+alias cpo "claude -p --model opus"
+alias cf "claude --model fable"
+alias cpf "claude -p --model fable"
 
 ################
 # Tmux Aliases #
