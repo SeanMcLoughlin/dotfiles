@@ -17,3 +17,5 @@
 .dotter/cache.toml
 .dotter/cache
 
+# Company-specific bashrc
+.bashrc_spm
