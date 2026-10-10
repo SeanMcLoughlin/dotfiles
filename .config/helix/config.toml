@@ -15,5 +15,3 @@ bufferline = "multiple"
 enable = true
 wrap-indicator = ""
 
-[editor.workspace-trust]
-level = "insecure"
