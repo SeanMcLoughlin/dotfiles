@@ -30,7 +30,7 @@ provide it inline or in a "Background" section at the top.
 ### 1. Choose a location
 
 Plans live under `~/plans`. That directory contains subdirectories organised by work area
-(e.g. `generator/`, `runner/`, `simulator/`). Inspect the directory to choose the best
+(e.g. `frontend/`, `backend/`, `cli/`). Inspect the directory to choose the best
 subdirectory. Choose a descriptive kebab-case filename (e.g. `address-generation.md`).
 
 If a plan does not have a relevant subdirectory, just place it under `~/plans`.
