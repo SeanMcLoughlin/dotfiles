@@ -2,7 +2,7 @@
 
 My config (dot) files.
 
-Run `dotter deploy` to install.
+Run `dotter deploy` to install. A new machine needs a `.dotter/local.toml`, which git ignores: set `packages = ["default"]` in it.
 
 Agent skills deploy into `~/.skills`, which must be a real directory, and `~/.claude/skills` points to it. `.dotter/global.toml` lists each skill directory. `dotter` links every file inside a listed directory, so run `dotter deploy` after you add a skill or a file to a skill.
 
