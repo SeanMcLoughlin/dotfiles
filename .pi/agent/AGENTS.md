@@ -7,7 +7,6 @@
 - `gh` for GitHub access. _Always_ use this if you're working with GitHub. If you're asked to search GitHub, use this tool.
 - `obsidian` for Obsidian CLI access. The user may ask you to search their notes.
 - `readwise` for Readwise Reader doc access. The user may ask you to search for an article they read in the past.
-- `notebooklm` (via MCP): Research assistant backed by Google NotebookLM. Ask questions against curated notebooks of source material.
 
 # Paths Available to you
 
