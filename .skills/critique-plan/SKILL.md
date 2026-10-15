@@ -2,17 +2,29 @@
 name: critique-plan
 description: Critically examine a previously written plan to find problems before it is executed. Use when asked to review, critique, red-team, or stress-test a plan, or when asked to find problems with a plan. Also handles "critique and fix in a loop until clean" when the prompt asks for looping.
 allowed-tools:
-  - read
   - bash
-  - edit
-  - write
+  - Read
+  - Edit
+  - Write
+  - Agent
 ---
 
 ## Purpose
 
-You are a **critical reviewer**, not an implementer. Your job is to find every problem in a
-plan before it is executed. Approach the plan with healthy scepticism: assume it has issues
-and try to find them. Do not defend the plan.
+Find every problem in a plan before it is executed.
+
+You do not critique the plan yourself. You dispatch a set of fresh critic agents, you fix what
+they find, and you dispatch a fresh set again. This is the whole point of the skill, so do not
+shortcut it.
+
+An agent that has already worked on a plan is the worst judge of whether the plan is finished.
+It remembers the effort it spent, so it drifts towards "good enough" after a few rounds instead
+of stopping when the plan is actually clean. A critic with a fresh context cannot do that. It
+cannot remember any earlier round, and it is never told which round it is on, so it has no way
+to decide that enough rounds have happened.
+
+Your job is orchestration and repair, not judgement about whether the plan deserves more
+scrutiny. The critics decide that.
 
 ---
 
@@ -20,10 +32,11 @@ and try to find them. Do not defend the plan.
 
 Two modes. Read the invoking prompt and pick one before doing anything else.
 
-**Single-pass (default).** Critique once, report, stop. You do not touch the plan file.
+**Single-pass (default).** Dispatch one set of critics, report, stop. You do not touch the plan
+file.
 
-**Loop.** Critique, fix everything you found, critique again, and keep going until a round
-finds nothing. Do not hand back between rounds.
+**Loop.** Dispatch critics, fix everything they found, dispatch a fresh set, and keep going
+until a round finds nothing. Do not hand back between rounds.
 
 Choose loop mode when the same prompt asks for it. Signals include: "loop", "loop on this",
 "keep going until there are no more critiques", "iterate until clean", "fix all then critique
@@ -31,11 +44,7 @@ again", "repeat until you find nothing", or any instruction that pairs critiquin
 and repetition.
 
 If the prompt only asks for a critique, stay in single-pass mode. Do not upgrade to loop mode
-because the plan turns out to have many problems — that decision is the user's.
-
-If loop mode is requested, follow steps 1 to 3 as written, then go to **Step 6** instead of
-steps 4 and 5. Step 4's report format is still what you use at the end of the loop, and Step 6
-says what to add to it.
+because the plan turns out to have many problems. That decision is the user's.
 
 ---
 
@@ -43,126 +52,207 @@ says what to add to it.
 
 Check whether the plan has already been identified from the conversation:
 
-- If the user has provided a path or pasted plan content directly — use that.
-- If a plan was recently discussed or written in this conversation — use that.
+- If the user has provided a path or pasted plan content directly, use that.
+- If a plan was recently discussed or written in this conversation, use that.
 - If nothing can be inferred, **ask the user** which plan they want you to critique before
   continuing. Do not guess.
 
-Once identified, read the plan in full:
+Read the plan in full yourself. You need it to write the brief in Step 2 and to apply fixes
+later.
+
+---
+
+## Step 2 — Set up the two areas
+
+The loop needs two areas, and they must stay apart.
+
+- The **history area** holds a git mirror of the plan, one commit per round. It persists between
+  runs. Only you read it.
+- The **review area** holds the plain copy the critics read. It lives in the scratchpad, so it
+  belongs to this session alone.
+
+Every command below is written with literal paths, and uses no shell variables. Which interpreter
+runs a tool command depends on the harness, and it is not always the login shell. Literal paths
+work in all of them. Substitute the paths yourself as you go.
+
+Two names to substitute:
+
+- `<slug>` is the plan's file name without the extension.
+- `<scratch>` is your scratchpad directory.
+
+### The history area: one repository for each plan
 
 ```bash
-cat <path-to-plan>
+mkdir -p ~/plans/.critique/<slug>
+git -C ~/plans/.critique/<slug> rev-parse --git-dir || git -C ~/plans/.critique/<slug> init -q
 ```
 
----
+**One repository for each plan, never one repository for all plans.** Several agents critique
+several plans at the same time, and git serialises nothing across processes. A shared repository
+would give you index lock failures, commits landing in another plan's history, and a thrash check
+reading another plan's diffs. A directory for each plan removes the shared state instead of
+trying to coordinate access to it.
 
-## Step 2 — Understand the context
+Key the directory on the plan's file name, not on its full path, and write the plan's real path
+into a `SOURCE` file so the history stays readable.
 
-Before forming judgements, make sure you understand what the plan is trying to achieve. If
-the plan references files, code, systems, or conventions you are not familiar with, investigate
-them briefly:
+**Two agents on the same plan still share one repository.** Take a lock with `mkdir`, which fails
+when the directory exists and is atomic in every shell:
 
 ```bash
-# Examples — adapt as needed
-ls <relevant-directory>
-cat <referenced-file>
+mkdir ~/plans/.critique/<slug>/lock
 ```
 
-Do not skip this step. A critique that misunderstands the domain is worse than no critique.
+If that fails, the history area is in use. Tell the user, keep the mirror in your scratchpad for
+this run instead of in `~/plans`, and say in the final report that this run's history was not
+retained. Never write to a locked history area. Remove the lock when the loop ends, including
+when it ends early.
+
+### Mark where this run starts
+
+The history holds earlier runs, so record the starting point:
+
+```bash
+cp <path-to-plan> ~/plans/.critique/<slug>/plan.md
+git -C ~/plans/.critique/<slug> add plan.md SOURCE
+git -C ~/plans/.critique/<slug> commit -q --allow-empty -m "run start: plan as written"
+git -C ~/plans/.critique/<slug> rev-parse HEAD
+```
+
+`--allow-empty` is needed because a second run on an unchanged plan has nothing to commit, and
+the marker must exist anyway.
+
+Keep that SHA in your own notes and use it literally in the thrash check. Every later `git`
+command reads only from that SHA forward. Otherwise the thrash check reads an argument that an
+earlier run already settled, and reports a reversal that never happened in this run.
+
+### The review area
+
+```bash
+mkdir -p <scratch>/critique-plan/<slug>/review
+```
+
+That directory must have no `.git` directory in it or above it. Keep it in the scratchpad, and
+never inside `~/plans/.critique/`.
+
+Do not point the critics at the plan where it lives. A plan inside a project repository carries
+its own history, and a critic has `bash`. An instruction not to read the history is weaker than
+a directory that holds no history to read.
+
+### The brief
+
+Write `<scratch>/critique-plan/<slug>/review/BRIEF.md` once, and never change it. It holds:
+
+- The goal the plan is meant to achieve, in the user's own terms.
+- The constraints the user stated.
+- The repository or directory the plan applies to, as an absolute path.
+
+The critics need this because a critic with no conversation context cannot judge scope. It
+cannot tell that the plan does more than the user asked, or less, unless you tell it what was
+asked.
+
+The brief must be identical in every round. It must contain no round number, no earlier
+critique, no list of what previous rounds fixed, and no changelog. Any of those tell a critic
+how much work has already happened, which is the bias this design removes.
 
 ---
 
-## Step 3 — Critically examine the plan
+## Step 3 — Dispatch a round of critics
 
-Work through the plan systematically. For each section, ask yourself every question in the
-checklist below. Take notes as you go — you will compile them into a report in step 4.
+Refresh the copy the critics read, then dispatch all five critics in one message so they run at
+the same time:
 
-### Correctness
+```bash
+cp <path-to-plan> <scratch>/critique-plan/<slug>/review/plan.md
+```
 
-- Does any step contain a factual error (wrong file path, wrong function name, wrong flag,
-  wrong API, wrong command syntax)?
-- Does the plan reference names — functions, types, modules, config keys, environment
-  variables, CLI flags — that do not exist or are misspelled?
-- Does the rationale given for any decision contradict how the system actually works?
-- Would following the instructions as written introduce a bug?
-- Are there off-by-one errors, wrong defaults, or incorrect assumptions about data types or
-  ranges?
+Five critics, each with its own part of the checklist. Split the work so that no critic has to
+choose which category to spend its attention on.
 
-### Completeness
+1. **Correctness.** Factual errors. Wrong file paths, function names, flags, APIs, command
+   syntax. Names that do not exist or are misspelled. Rationale that contradicts how the system
+   works. Instructions that would introduce a bug as written. Off-by-one errors, wrong defaults,
+   wrong assumptions about types or ranges. This critic must check every claim against the real
+   code.
+2. **Completeness.** Steps too vague to act on. Unstated prerequisites, such as tools that must
+   be installed or prior work that must be done first. Edge cases and error paths the plan
+   ignores. Missing cleanup, rollback, or recovery steps. Whether the verification section
+   exists and tests more than the happy path.
+3. **Design and scope.** Unnecessary coupling, duplication, or complexity. Logic in the wrong
+   layer. Code smells. Violations of the conventions already in the codebase. Whether a simpler
+   design reaches the same goal, and whether the extra complexity is justified. Whether the plan
+   solves the root cause or a symptom. Whether it does more or less than the brief asked. A
+   pattern that would cause systemic problems if repeated.
+4. **Behaviour and safety.** Data loss, corruption, or irreversible change the plan does not
+   flag. Race conditions, concurrency problems, ordering dependencies. Assumed idempotency where
+   the operation is not idempotent. Handling of secrets and sensitive data. This critic must
+   trace the runtime path or the generated artefact by hand, and ask what happens on the second
+   iteration, at the boundary, when the loop runs a thousand times, when two features are
+   enabled together, and when default values collide.
+5. **Clarity.** Typos, grammar, and phrasing that a reader could misread. Abbreviations and
+   domain terms used before they are introduced. Step ordering. Steps that read as optional but
+   are mandatory, or the reverse.
 
-- Are there steps that are underspecified — described at a hand-wavy level without enough
-  detail for an agent to act on them unambiguously?
-- Are there implicit prerequisites that are never stated (tools that must be installed,
-  environment that must be configured, prior work that must be done first)?
-- Are there edge cases or error paths that the plan ignores but should handle?
-- Does the plan omit any cleanup, rollback, or error-recovery steps that will be needed?
-- Is the verification section present and sufficient, or does it test only the happy path?
+### What every critic is told
 
-### Architecture and design
+Give each critic the same frame, and change only its category:
 
-- Does the plan introduce unnecessary coupling, duplication, or complexity?
-- Does it place logic in the wrong layer or abstraction level?
-- Does it introduce code smells?
-- Does it follow clean code principles?
-- Does it violate established patterns or conventions in the codebase?
-- Will the approach make future changes harder than they need to be?
-- Is there a simpler design that achieves the same goal? If so, why wasn't it chosen — is
-  the extra complexity justified?
-- Does the plan introduce a pattern that, if repeated elsewhere, would cause systemic
-  problems?
+- Give the absolute path of the plan copy and of the brief. Both are in the review area. Give no
+  other path in `~/plans` and no path under `~/plans/.critique/`.
+- Assume the plan has problems, and try to find them. Do not defend it.
+- Your category is `<category>`. Report anything serious you notice outside it, but spend your
+  effort inside it.
+- Understand the domain before you judge it. A critique that misreads the domain is worse than
+  no critique. Read the referenced files.
+- Verify claims against the real code with `bash` and `read`. Do not reason from memory.
+- Report every finding, including small ones. Do not filter by how much work a fix would be.
+- You are read-only. Do not edit the plan.
+- Report nothing about how finished or polished the plan seems. Report only findings.
 
-### Safety and side effects
+Never tell a critic which round it is on, that earlier rounds happened, or that anything was
+already fixed. If a critic asks, do not answer it. Dispatch a new one.
 
-- Could any step cause data loss, corruption, or irreversible change that the plan does not
-  flag?
-- Are there race conditions, concurrency issues, or ordering dependencies the plan ignores?
-- Does the plan assume idempotency where operations are not actually idempotent?
-- Are secrets, credentials, or sensitive data handled correctly?
+### What every critic returns
 
-### Scope and intent
+```
+#### <Short title> [<category>]
+**Severity:** Critical | Major | Minor | Nit
+**Evidence:** <the exact text from the plan that is wrong>
 
-- Does the plan solve the right problem, or does it address a symptom rather than the root
-  cause?
-- Is it doing more than was asked (scope creep that introduces risk)?
-- Is it doing less than was asked (missing requirements)?
-- Does any step have unintended side effects on parts of the system not mentioned in the
-  plan?
+<What is wrong, and what the consequence is if it is not fixed.>
 
-### Clarity and presentation
+**Suggestion:** <What should be done differently.>
+```
 
-- Are there typos, grammatical errors, or confusing phrasing that could cause a reader to
-  misinterpret a step?
-- Are abbreviations or domain terms used without being introduced?
-- Is the ordering of steps logical? Could any step be misread as optional when it is
-  mandatory, or vice versa?
+Categories: `correctness`, `completeness`, `architecture`, `safety`, `scope`, `clarity`.
+
+Severity:
+
+- **Critical** — would cause the plan to fail outright, introduce a serious bug, or cause data
+  loss.
+- **Major** — would likely cause incorrect behaviour, significant rework, or a hard-to-fix
+  structural problem.
+- **Minor** — suboptimal, fragile, or likely to cause confusion, but not a showstopper.
+- **Nit** — typo, style issue, or very small improvement.
+
+A critic that finds nothing says so, and says which checks it ran to earn that.
 
 ---
 
-## Step 4 — Write the critique
+## Step 4 — Deliver the critique (single-pass mode)
 
-Compile your findings into a structured report. Use this format:
+Merge the five reports. Drop exact duplicates, keep near-duplicates that make different points,
+and order by severity. Present it as:
 
 ```
 ## Plan Critique: <plan name or path>
 
 ### Summary
-One or two sentences characterising the overall state of the plan and how serious the
-problems are. Be direct.
+One or two sentences on the overall state of the plan and how serious the problems are. Be
+direct.
 
 ### Issues
-
-#### 1. <Short title> [<category>]
-**Severity:** Critical | Major | Minor | Nit
-
-<Description of the problem. Be specific: quote the relevant part of the plan, explain
-exactly what is wrong, and explain what the consequence would be if it were not fixed.>
-
-**Suggestion:** <What should be done differently.>
-
----
-
-#### 2. <Short title> [<category>]
-…(repeat for each finding)…
+<the merged findings, numbered>
 
 ### Verdict
 One of:
@@ -172,112 +262,141 @@ One of:
   substantially rewritten before being executed.
 ```
 
-Categories to choose from: `correctness`, `completeness`, `architecture`, `safety`,
-`scope`, `clarity`.
+Do not implement any fixes. Do not rewrite the plan. Your job is to surface problems so that the
+user, or a separate agent, can decide what to do about them.
 
-Severity guidelines:
-
-- **Critical** — would cause the plan to fail outright, introduce a serious bug, or cause
-  data loss.
-- **Major** — would likely cause incorrect behaviour, significant rework, or a hard-to-fix
-  structural problem.
-- **Minor** — suboptimal, fragile, or likely to cause confusion, but not a showstopper.
-- **Nit** — typo, style issue, or very small improvement.
+Do not soften a finding because you disagree with it. Report it and say you disagree.
 
 ---
 
-## Step 5 — Deliver the critique (single-pass mode)
+## Step 5 — Loop until clean (loop mode only)
 
-Present the report to the user. Do not implement any fixes. Do not rewrite the plan. Your
-job is to surface problems so that the user (or a separate agent) can decide what to do
-about them.
+Each round is:
 
-If there are **no problems at all**, say so clearly — but only after you have genuinely
-worked through the checklist. A clean bill of health should be earned, not assumed.
-
-In loop mode this step does not apply. Go to Step 6.
-
----
-
-## Step 6 — Loop until clean (loop mode only)
-
-Repeat this cycle until a round produces no findings:
-
-1. Critique, using steps 2 and 3.
+1. Dispatch a fresh set of five critics, as in Step 3.
 2. Fix **every** finding in the plan file, including the nits.
-3. Sweep for the damage the fixes just caused — see "After every fix round" below.
-4. Go back to 1.
+3. Sweep for the damage the fixes just caused. See "After every fix round".
+4. Commit the round.
+5. Check for thrash. See "Stopping for thrash".
+6. Go back to 1.
 
 Do not report between rounds. Do not ask whether to continue. Run the loop to convergence and
 report once, at the end.
 
+**All findings are in scope.** A round is clean only when all five critics return nothing. Nits
+count. Do not stop because only nits remain.
+
+Commit after the fixes of each round:
+
+```bash
+cp <path-to-plan> ~/plans/.critique/<slug>/plan.md
+git -C ~/plans/.critique/<slug> commit -qam "round <n>: <count> findings — <short subjects>"
+```
+
+One commit per round keeps each diff small, which is what makes the thrash check cheap.
+
 ### After every fix round
 
-Fixing a plan breaks the plan. Every round, before critiquing again, check for the wreckage:
+Fixing a plan breaks the plan. Every round, before you dispatch again, check for the wreckage:
 
-- **Stale cross-references.** Renaming a knob, renumbering a step, or splitting a section
-  leaves dangling pointers. Grep for every identifier you renamed and every step number you
-  moved. This is the single most common form of self-inflicted damage.
-- **Stale counts.** "The seven knobs", "two further enums", "fourteen frames" — any number in
-  the prose that a fix invalidated.
-- **Orphaned or misfiled prose.** Inserting a heading can silently move the paragraphs after
-  it under the wrong parent. Check the heading outline, not just the text.
-- **Duplicated content.** Adding a section that restates something already covered elsewhere.
+- **Stale cross-references.** Renaming a knob, renumbering a step, or splitting a section leaves
+  dangling pointers. Grep for every identifier you renamed and every step number you moved. This
+  is the most common form of self-inflicted damage.
+- **Stale counts.** "The seven knobs", "two further enums", "fourteen frames". Any number in the
+  prose that a fix invalidated.
+- **Orphaned or misfiled prose.** Inserting a heading can silently move the paragraphs after it
+  under the wrong parent. Check the heading outline, not just the text.
+- **Duplicated content.** A new section that restates something already covered elsewhere.
 
-Cheap way to do all four: dump the heading outline and grep for the identifiers you touched.
+Cheap way to do all four: dump the heading outline, and grep for the identifiers you touched.
+
+### Record rejected approaches in the plan
+
+The plan must hold a section named "Rejected approaches, and why". Add it if it is missing. When
+a fix supersedes an earlier fix, record the rejected approach and the reason there.
+
+This section is load-bearing in this design. Each round's critics are new, so they know only
+what the plan tells them. If the plan does not say why an approach was refused, a later critic
+will propose it again, and the loop will fight itself. A short "wrong approach one, wrong
+approach two" note is worth more than a clean-looking final answer.
+
+### Repeat findings
+
+A fresh critic that raises a subject an earlier round already settled is giving you real
+information, not noise. It has no memory to be tired, so treat the repeat as evidence that the
+plan does not justify its own decision.
+
+You may dismiss a repeat finding only when both hold:
+
+- The plan already records the decision and the reason, in the rejected-approaches section.
+- The critic adds no argument the record does not already answer.
+
+List every dismissal in the final report, with the reason. A dismissal you do not report is
+indistinguishable from a finding you hid.
 
 ### Treat your own fixes as the prime suspects
 
-The most likely defect in round N is the fix you made in round N-1. Expect this and hunt for
-it deliberately. A fix written to solve one problem routinely:
+The most likely defect in round N is the fix you made in round N-1. A fix written to solve one
+problem routinely:
 
-- solves it somewhere the code cannot reach (an API that lacks the data you assumed),
-- solves it with a value that breaks the normal case (a limit tuned for the pathological case),
+- solves it somewhere the code cannot reach, such as an API that lacks the data you assumed,
+- solves it with a value that breaks the normal case, such as a limit tuned for the pathological
+  case,
 - or contradicts a decision made elsewhere in the plan.
 
-When a fix supersedes an earlier fix, **record both the rejected approach and why** in the
-plan itself. Otherwise the next reader retries it. A short "wrong approach one / wrong approach
-two" note is worth more than a clean-looking final answer.
+### Stopping for thrash
 
-### Escalate what you check as rounds progress
+Two rounds that fight over the same decision mean the loop cannot settle it. That is usually an
+unmade design decision that only the user can make, so hand it back.
 
-Early rounds find text problems; later rounds must find behaviour problems. If round N only
-re-read the prose, round N did not earn its stop condition. Push outward:
+Read this run's per-round diffs and judge whether a change undoes an earlier one. Read from
+the run-start SHA only, never the whole history, because earlier runs settled their own arguments:
 
-1. Internal consistency — contradictions, stale references, structure.
-2. Claims against the code — do the cited files, functions, line ranges, flags and types
-   actually exist and say what the plan claims?
-3. Claims against behaviour — trace the generated artefact or runtime path by hand. Ask what
-   happens on the second iteration, at the boundary, when the loop runs a thousand times, when
-   two features are enabled together, when the default values collide.
+```bash
+git -C ~/plans/.critique/<slug> log --oneline <run-start-sha>..HEAD
+git -C ~/plans/.critique/<slug> log -p --unified=3 <run-start-sha>..HEAD
+```
 
-Layer 3 is where the expensive defects live and where reading alone will not take you.
-Verify against the real code with `bash` and `read` rather than reasoning from memory.
+Judge this by meaning, not by text. A change that returns to an earlier decision in new wording
+is still a reversal. A value that moves 8, then 64, then 128 is not a reversal. It is a plan
+converging, and the loop continues.
+
+**You may end the loop for thrash only if you quote both diff hunks:** the hunk that made the
+change, and the later hunk that undoes it, with the round of each named. If you cannot produce
+both hunks, the loop continues.
+
+This rule exists because ending for thrash is an easy way out, and you are the party with a
+reason to take it. Evidence the user can check in a few seconds is the guard.
 
 ### Stopping
 
-Stop when a round genuinely finds nothing — having done real verification that round, not
-merely re-read the text.
+Stop when a round genuinely finds nothing, with all five critics reporting nothing.
 
-Stop early and hand back to the user if either of these happens:
+Stop early and hand back if either of these happens:
 
-- **Thrash.** Two rounds in a row where a fix breaks a previous fix on the same subject.
-  Report the oscillation and what the trade-off actually is; it is usually an unmade design
-  decision that only the user can settle.
-- **Ten rounds** without convergence. Report where it stands and what keeps recurring.
+- **Thrash**, proven with both hunks as above. Report the oscillation and what the trade-off
+  actually is.
+- **25 rounds** without convergence. Report where it stands and what keeps recurring.
 
-Never fabricate a clean round to end the loop.
+Never fabricate a clean round to end the loop. Never drop a critic to make a round clean.
 
 ### Reporting a completed loop
 
 Report once, covering:
 
-- A per-round table: round number, number of findings, and the serious ones in one line each.
+- A per-round table: round number, findings per critic, and the serious ones in one line each.
 - Every change that altered the plan's **design** rather than its wording.
 - Any defect you introduced and then fixed, named as such. This is the most useful part of the
   report and the easiest to quietly omit.
-- Where the residual risk sits — what the loop could not settle by reading, and what would
-  settle it.
+- Every repeat finding you dismissed, and why.
+- Where the residual risk sits. What the loop could not settle by reading, and what would settle
+  it.
 
-Do not push, commit, or execute any part of the plan. Loop mode edits the plan document and
-nothing else.
+Then release the lock:
+
+```bash
+rmdir ~/plans/.critique/<slug>/lock
+```
+
+Do not push, commit to a project repository, or execute any part of the plan. Loop mode edits
+the plan document, and commits only to that plan's own history area under `~/plans/.critique/`.
