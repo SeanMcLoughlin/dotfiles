@@ -30,7 +30,6 @@ depends = []
 
 ".skills/ci-local" = { target = "~/.skills/ci-local", type = "symbolic" }
 ".skills/clipboard" = { target = "~/.skills/clipboard", type = "symbolic" }
-".skills/code-review" = { target = "~/.skills/code-review", type = "symbolic" }
 ".skills/critique-plan" = { target = "~/.skills/critique-plan", type = "symbolic" }
 ".skills/generate-waves-rc" = { target = "~/.skills/generate-waves-rc", type = "symbolic" }
 ".skills/git-commit" = { target = "~/.skills/git-commit", type = "symbolic" }
