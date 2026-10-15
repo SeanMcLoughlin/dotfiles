@@ -106,10 +106,12 @@ alias cpf "claude -p --model fable"
 # Tmux Aliases #
 ################
 alias tmas 'tmux attach-session -t'
+alias tmns 'tmux new-session -s'
 alias tmasd 'tmux attach-session -d -t'
 alias tmls 'tmux ls'
 alias t 'tmux new-session -A -s main'
 alias rtmas 'r -k tmas'
+alias rtmns 'r -k tmns'
 alias rtmasd 'r -k tmasd'
 alias rtmls 'r tmls'
 alias rt 'r -k t'
