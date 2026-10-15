@@ -18,4 +18,4 @@
 .dotter/cache
 
 # Company-specific bashrc
-.bashrc_spm
+.bashrc_spm.bash
