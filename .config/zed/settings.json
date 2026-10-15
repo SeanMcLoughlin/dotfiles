@@ -46,11 +46,7 @@
     {
       "host": "work",
       "args": [],
-      "projects": [
-        {
-          "paths": ["/path/to/project/./"],
-        },
-      ],
+      "projects": [],
     },
     {
       "host": "code",
@@ -90,7 +86,7 @@
     //     "path": "dvt-lsp-bridge",
     //     "arguments": [".", "-lang", "vlog"],
     //     "env": {
-    //       "DVT_LICENSE_FILE": "20000@license-server"
+    //       "DVT_LICENSE_FILE": "<port>@<license-server>"
     //     }
     //   }
     // }

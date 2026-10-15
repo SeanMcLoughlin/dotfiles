@@ -89,13 +89,10 @@ done'''
 direnv-allow = '''if [ -f "{{ worktree_path }}/.envrc" ]; then
   direnv allow "{{ worktree_path }}"
 fi'''
+brew-cache = '''cache_script="{{ worktree_path }}/scripts/direnv/setup_macos.sh"
+if [ -f "$cache_script" ] && grep -q '\.brewfile\.cache' "$cache_script"; then
+  touch "{{ worktree_path }}/.brewfile.cache"
+fi'''
 
 [merge]
 no-commit = true
-
-[projects]
-
-[projects."gitlab.example.com/arch/project"]
-# Touch .brewfile.cache so new worktrees start warm — skips the slow
-# `brew bundle check` Ruby startup on first direnv load.
-post-start.brew-cache = "touch {{ worktree_path }}/.brewfile.cache"

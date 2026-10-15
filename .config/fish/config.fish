@@ -72,8 +72,7 @@ alias web "ddgr --noua"
 ##########
 alias mr "glab mr view"
 alias pl "glab ci get -p"
-# ci-status lives in the project repo (tools/ci-status) and monitors itself,
-# so these no longer need viddy.
+# ci-status monitors itself, so these no longer need viddy.
 function mrci --description 'Monitor the CI of a merge request, child pipelines included'
     ci-status -m --mr $argv
 end
