@@ -2,15 +2,11 @@
 
 My config (dot) files.
 
-Run `dotter deploy` to install. Agent skills are the one exception: `dotter`
-recurses a directory into per-file links, so a newly added skill file would
-silently stay outside this repo. Link the whole directory once instead:
+Run `dotter deploy` to install.
 
-```sh
-ln -s ~/.dotfiles/.skills ~/.skills
-```
+Agent skills deploy into `~/.skills`, which must be a real directory, and `~/.claude/skills` points to it. `.dotter/global.toml` lists each skill directory. `dotter` links every file inside a listed directory, so run `dotter deploy` after you add a skill or a file to a skill.
 
-`~/.claude/skills` is itself a symlink to `~/.skills`.
+A second repository deploys its own skills and rules into the same `~/.skills` and `~/.pi/agent/`. `AGENTS.md` imports `~/.pi/agent/private-rules.md` from it.
 
 `glab` needs one extra step: `scripts/glab-config.sh`. Its `config.yml` lives at a
 different path per platform, glab rewrites it on every run, and it holds the API token

@@ -7,7 +7,6 @@ depends = []
 # Shell configurations
 ".zshrc" = "~/.zshrc"
 ".zshrc_spm" = "~/.zshrc_spm"
-".bashrc_spm.bash" = "~/.bashrc_spm.bash"
 ".vimrc" = "~/.vimrc"
 ".vimrc_plugins" = "~/.vimrc_plugins"
 ".tmux.conf" = "~/.tmux.conf"
@@ -29,9 +28,17 @@ depends = []
 ".claude/settings.json" = "~/.claude/settings.json"
 ".claude/hooks/worktree-create.sh" = { target = "~/.claude/hooks/worktree-create.sh", type = "symbolic" }
 
-# Shared agent skills are NOT managed by dotter: it recurses a directory into
-# per-file links, so a new skill file would silently stay outside the repo.
-# ~/.skills is a plain symlink to .skills instead -- see README.
+".skills/ci-local" = { target = "~/.skills/ci-local", type = "symbolic" }
+".skills/clipboard" = { target = "~/.skills/clipboard", type = "symbolic" }
+".skills/code-review" = { target = "~/.skills/code-review", type = "symbolic" }
+".skills/critique-plan" = { target = "~/.skills/critique-plan", type = "symbolic" }
+".skills/generate-waves-rc" = { target = "~/.skills/generate-waves-rc", type = "symbolic" }
+".skills/git-commit" = { target = "~/.skills/git-commit", type = "symbolic" }
+".skills/git-push" = { target = "~/.skills/git-push", type = "symbolic" }
+".skills/new-plan" = { target = "~/.skills/new-plan", type = "symbolic" }
+".skills/rewrite-history" = { target = "~/.skills/rewrite-history", type = "symbolic" }
+".skills/slack-message-formatter" = { target = "~/.skills/slack-message-formatter", type = "symbolic" }
+".skills/wt-create" = { target = "~/.skills/wt-create", type = "symbolic" }
 
 # Pi coding agent
 ".config/fish/pi.fish" = "~/.config/fish/pi.fish"
