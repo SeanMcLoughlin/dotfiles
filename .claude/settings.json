@@ -139,7 +139,7 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -171,7 +171,6 @@
     "clangd-lsp@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
     "worktrunk@worktrunk": true,
-    "swift-lsp@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -206,7 +205,7 @@
   },
   "effortLevel": "medium",
   "showClearContextOnPlanAccept": true,
-  "tui": "default",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "editorMode": "normal",
