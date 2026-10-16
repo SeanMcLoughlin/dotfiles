@@ -86,6 +86,7 @@ depends = []
 
 # tmux
 ".config/tmux/resurrect-claude-sessions.py" = "~/.config/tmux/resurrect-claude-sessions.py"
+".config/tmux/codeburn-status.sh" = "~/.config/tmux/codeburn-status.sh"
 
 # Zellij
 ".config/zellij/config.kdl" = "~/.config/zellij/config.kdl"

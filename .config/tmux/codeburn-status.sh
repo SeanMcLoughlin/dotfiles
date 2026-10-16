@@ -8,9 +8,15 @@ LOCK="$CACHE.lock"
 
 mkdir -p "$(dirname "$CACHE")"
 
+if [ "$(uname)" = Darwin ]; then
+    mtime() { stat -f %m "$1"; }
+else
+    mtime() { stat -c %Y "$1"; }
+fi
+
 age=$((MAX_AGE + 1))
 if [ -f "$CACHE" ]; then
-    age=$(($(date +%s) - $(stat -c %Y "$CACHE")))
+    age=$(($(date +%s) - $(mtime "$CACHE")))
 fi
 
 if [ "$age" -gt "$MAX_AGE" ] && mkdir "$LOCK" 2>/dev/null; then
