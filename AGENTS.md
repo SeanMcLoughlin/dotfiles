@@ -1,0 +1,1 @@
+- Commands in the scripts of this repository must work on both Linux and macOS. Prefer commands that exist on both systems. If a command differs between the systems, use a conditional on the operating system (for example `uname`) to choose between two commands. If you cannot test on both systems, use your best judgment.
