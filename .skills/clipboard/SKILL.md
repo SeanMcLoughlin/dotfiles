@@ -62,7 +62,10 @@ Then normalize the Markdown with Prettier when Prettier is installed. Skip this 
 
 Use a quoted heredoc so the shell expands nothing. Choose a delimiter that does not occur in the text.
 
-`copy.sh`, next to this file, copies plain text. On a Mac with a local shell it uses `pbcopy`. In every other case, such as a Linux machine reached over SSH or a tmux session, it sends the text to the clipboard of the machine that shows the terminal, with the OSC 52 escape sequence.
+`copy.sh`, next to this file, copies the Markdown from its input. With `--rich`, it also puts the text on the clipboard as HTML.
+
+- On a Mac with a local shell, it uses `pbcopy`, or `copy-rich.sh` for `--rich`.
+- In every other case, such as a Linux machine reached over SSH or a tmux session, it sends escape sequences to the terminal. The clipboard of the machine that shows the terminal receives the text. OSC 52 carries the plain text. For `--rich`, OSC 5522 follows it and carries the plain text with the HTML, which `pandoc` makes. Ghostty 1.4 or later accepts OSC 5522. A terminal that does not accept it keeps the plain text.
 
 **Markdown target:**
 
@@ -72,19 +75,17 @@ prettier --stdin-filepath clip.md --prose-wrap never <<'CLIP_EOF' | ~/.skills/cl
 CLIP_EOF
 ```
 
-**Slack and Jira targets, on a Mac with a local shell:** `copy-rich.sh`, next to this file, turns the Markdown into HTML with `pandoc` and puts both on the clipboard. Slack and Jira paste the HTML with its formatting; a plain-text field pastes the Markdown.
+**Slack and Jira targets:** use `--rich`. Slack and Jira paste the HTML with its formatting; a plain-text field pastes the Markdown.
 
 ```bash
-prettier --stdin-filepath clip.md --prose-wrap never <<'CLIP_EOF' | ~/.skills/clipboard/copy-rich.sh
+prettier --stdin-filepath clip.md --prose-wrap never <<'CLIP_EOF' | ~/.skills/clipboard/copy.sh --rich
 <the text>
 CLIP_EOF
 ```
 
-**Slack and Jira targets, in any other case:** `copy-rich.sh` needs a Mac clipboard and cannot run. Copy the Markdown with `copy.sh` as for the Markdown target, and say that the paste will be plain text.
+A bare command goes straight to `copy.sh`, without `--rich`, for every target. If `prettier` is not on `PATH`, leave it out of the pipe. If `pandoc` is not on `PATH`, `copy.sh` copies plain text only; say that the paste will be plain text.
 
-A bare command goes straight to `copy.sh` for every target. If `prettier` is not on `PATH`, leave it out of the pipe. If `pandoc` is not on `PATH`, copy the Markdown with `copy.sh` and say that the paste will be plain text.
-
-On a Mac with a local shell, check the result with `pbpaste | head -5`. Any other shell cannot read the clipboard of the machine that shows the terminal, so skip the check and say that you did not check it. For the Slack and Jira targets on a Mac, also check that the clipboard holds HTML:
+On a Mac with a local shell, check the result with `pbpaste | head -5`. Any other shell cannot read the clipboard of the machine that shows the terminal, so skip the check and say that you did not check it. For the Slack and Jira targets on a Mac with a local shell, also check that the clipboard holds HTML:
 
 ```bash
 osascript -l JavaScript -e 'ObjC.import("AppKit"); ObjC.deepUnwrap($.NSPasteboard.generalPasteboard.types).includes("public.html")'
