@@ -3,6 +3,7 @@
 # On a Mac with a local shell, use pbcopy, or copy-rich.sh for --rich.
 # Elsewhere, send escape sequences to the terminal, so the clipboard of the machine that shows the terminal receives the text: OSC 52 for plain text, then OSC 5522 for plain text with HTML. A terminal that does not know OSC 5522 ignores it and keeps the OSC 52 copy.
 # Inside tmux, the escape sequences go through tmux passthrough, which needs "set -g allow-passthrough on".
+# Ghostty answers an OSC 5522 write with a status message. The tmux config defines that message as a user key, so tmux drops it instead of typing it into the active pane.
 set -euo pipefail
 
 rich=0
@@ -40,7 +41,7 @@ if [ "$rich" = 1 ] && command -v pandoc >/dev/null 2>&1; then
     for part in "text/plain:$md" "text/html:$html"; do
         mime=${part%%:*}
         mime64=$(printf %s "$mime" | b64)
-        while IFS= read -r chunk; do
+        while IFS= read -r chunk || [ -n "$chunk" ]; do
             osc5522+="${esc}]5522;type=wdata:mime=${mime64};${chunk}${st}"
         done < <(b64 <"${part#*:}" | fold -w 4096)
     done
@@ -50,8 +51,10 @@ fi
 if [ -n "${TMUX:-}" ]; then
     tty=$(tmux display-message -p -t "${TMUX_PANE:-}" '#{pane_tty}')
     tmux load-buffer - <"$md"
-    payload="${osc52}${osc5522}"
-    printf '%s' "${esc}Ptmux;${payload//$esc/$esc$esc}${st}" >"$tty"
+    payload="${esc}Ptmux;${osc52//$esc/$esc$esc}${osc5522//$esc/$esc$esc}${st}"
 else
-    printf '%s' "${osc52}${osc5522}" >/dev/tty
+    tty=/dev/tty
+    payload="${osc52}${osc5522}"
 fi
+
+printf '%s' "$payload" >"$tty"
