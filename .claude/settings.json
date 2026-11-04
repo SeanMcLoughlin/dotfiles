@@ -160,6 +160,16 @@
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tmux-notify.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -210,5 +220,6 @@
   "theme": "auto",
   "editorMode": "normal",
   "verbose": false,
+  "preferredNotifChannel": "notifications_disabled",
   "skipAutoPermissionPrompt": true
 }
